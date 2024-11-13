@@ -14,6 +14,11 @@ class DriveWise extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: FirstPage(),
+      theme: ThemeData(
+        useMaterial3: false,
+        primarySwatch: Colors.deepPurple,
+      ),
+
       routes: {
         '/firstpage': (context) => FirstPage(),
         '/homepage': (context) => HomePage(),
