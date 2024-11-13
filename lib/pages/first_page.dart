@@ -6,7 +6,7 @@ import 'package:drive_wise/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 
 class FirstPage extends StatefulWidget {
-  FirstPage({super.key});
+  const FirstPage({super.key});
 
   @override
   State<FirstPage> createState() => _FirstPageState();
