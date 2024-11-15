@@ -1,5 +1,5 @@
-//GPS tracking functionality - Andy Guest - Nov 12 2024
-//for tracking the user's location during a trip
+//Andy Guest - Nov 12 2024
+//GPS tracking functionality - for tracking the user's location during a trip
 
 import 'dart:async';//so location tracking can work async with rest of app
 import 'package:flutter/material.dart';
@@ -7,6 +7,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';//to ask for location permissions
 
 StreamSubscription<Position>? _positionStreamSubscription;
+double? currentLatitude;
+double? currentLongitude;
 
 //call when trip starts -> will check location permissions then start tracking the devices location
 Future<void> gpsTracking() async {
@@ -52,4 +54,6 @@ void _storeLocationInfo() {
 //for debugging, prints lat and long in terminal
 void _logLocation(Position position) {
   debugPrint('Latitude: ${position.latitude}, Longitude: ${position.longitude}');
+  currentLatitude = position.latitude;
+  currentLongitude = position.longitude;
 }
