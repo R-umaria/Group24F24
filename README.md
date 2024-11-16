@@ -1,16 +1,15 @@
 # drive_wise
+DriveWise, a mobile application developed in Flutter that uses smartphone sensors like GPS, accelerometer, & Gyroscope, to track driving behavior, generate trip scores, and provide real-time feedback. The app includes features like parental monitoring and gamification to encourage safe driving.
 
-A new Flutter project.
 
-## Getting Started
+##Setup
+Git Clone:
 
-This project is a starting point for a Flutter application.
+Clone the repository in your local machine using the following command:
+```git clone https://github.com/tonizeng/spotSpot.git```
 
-A few resources to get you started if this is your first Flutter project:
+Open Terminal in the root directory and run:
+```flutter pub get```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+To run the application:
+```flutter run```
