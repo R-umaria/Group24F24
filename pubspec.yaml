@@ -6,7 +6,6 @@ environment:
   sdk: ">=3.5.4 <4.0.0"
 
 dependencies:
-  permission_handler: ^10.2.0
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
