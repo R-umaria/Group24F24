@@ -10,7 +10,8 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.8
   sensors_plus: ^6.1.0
-  geolocator: ^10.1.0   # Updated version to match latest stable
+  geolocator: ^13.0.1
+  http: ^1.1.0
   permission_handler: ^11.1.1   # For permissions handling in Android
   scidart: ^0.0.1 
   savgol: ^0.1.0+4

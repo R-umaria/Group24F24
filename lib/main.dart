@@ -6,7 +6,6 @@ import 'package:drive_wise/pages/login_screen.dart'; // Import the LoginScreen
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await gpsTracking(); // Initialize GPS tracking on app start
   runApp(const DriveWise());
 }
 
