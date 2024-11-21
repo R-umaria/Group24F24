@@ -17,7 +17,7 @@ class DriveWise extends StatefulWidget {
 }
 
 class _DriveWiseState extends State<DriveWise> {
-  bool isLoggedIn = false; // Track the user's login status
+  bool isLoggedIn = true; // Track the user's login status //changed to true for dev purpose
 
   // Callback function to update login state when login is successful
   void _onLoginSuccess() {

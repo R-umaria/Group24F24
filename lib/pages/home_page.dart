@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
         acceleration = smoothedAcceleration;
       });
 
-      print('Raw Acceleration: $rawAcceleration, Smoothed Acceleration: $smoothedAcceleration');
+      // print('Raw Acceleration: $rawAcceleration, Smoothed Acceleration: $smoothedAcceleration');
     });
   }
 
@@ -96,7 +96,7 @@ class _HomePageState extends State<HomePage> {
         rotationRate = event.y;
       });
       if (rotationRate > 3.0 || rotationRate < -3.0) {
-        print('Sharp turn detected! Rotation rate: $rotationRate');
+        // print('Sharp turn detected! Rotation rate: $rotationRate');
       }
     });
   }
