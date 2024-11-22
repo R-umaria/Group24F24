@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart'; // Add this package to pubspec.yaml
 
 void main() {
   runApp(MyApp());
@@ -38,7 +39,31 @@ class HomePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 20),
+            // Custom Shape Divider with "Hello Driver!" Text
+            Stack(
+              children: [
+                ClipPath(
+                  clipper: WaveClipperOne(reverse: false, flip: true), // Creates a wavy shape
+                  child: Container(
+                    height: 150,
+                    color: const Color.fromRGBO(86, 170, 200, 1), // Background color
+                  ),
+                ),
+                Positioned(
+                  left: 16,
+                  bottom: 20,
+                  child: Text(
+                    "Hello Driver!",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 20), // Add spacing after the stack
             Card(
               color: const Color.fromRGBO(225, 225, 225, 1),
               elevation: 3,
@@ -143,12 +168,13 @@ class HomePage extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color.fromRGBO(50, 50, 50, 1),
                         minimumSize: Size(double.infinity, 40),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
                       ),
                       child: Text(
-                              'More Details',
-                              style: TextStyle(color: Colors.white),
-                            ),
+                        'More Details',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ],
                 ),
@@ -169,7 +195,9 @@ class HomePage extends StatelessWidget {
                 children: [
                   Text(
                     'Start Trip',
-                    style: TextStyle(color: const Color.fromRGBO(255, 255, 255, 1), fontSize: 22), // Text color set to white
+                    style: TextStyle(
+                        color: const Color.fromRGBO(255, 255, 255, 1),
+                        fontSize: 22), // Text color set to white
                   ),
                   SizedBox(width: 8), // Spacing between text and icon
                   Icon(
