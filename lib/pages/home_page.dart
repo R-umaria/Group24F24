@@ -34,190 +34,192 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Custom Shape Divider with "Hello Driver!" Text (Covers the full width)
-          Stack(
-            children: [
-              ClipPath(
-                clipper: WaveClipperOne(reverse: false, flip: true), // Creates a wavy shape
-                child: Container(
-                  height: 180,
-                  width: double.infinity, // Ensures it spans the full width
-                  color: const Color.fromRGBO(86, 170, 200, 1), // Background color
-                ),
-              ),
-              Positioned(
-                left: 16,
-                bottom: 50,
-                child: Text(
-                  "Hello Driver!",
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          // Rest of the UI inside Padding
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Custom Shape Divider with "Hello Driver!" Text (Covers the full width)
+            Stack(
               children: [
-                SizedBox(height: 20), // Add spacing after the stack
-                Card(
-                  color: const Color.fromRGBO(225, 225, 225, 1),
-                  elevation: 3,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          'Last Trip',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: const Color.fromRGBO(112, 112, 112, 1),
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Container(
-                          height: 150,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: const Color.fromRGBO(163, 163, 163, 0.5),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'Map Placeholder',
-                              style: TextStyle(color: Colors.black45),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Date:',
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                                Text(
-                                  '24/10/2024',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(height: 8),
-                                Text(
-                                  'Distance Traveled:',
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                                Text(
-                                  '36 Kms',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Text(
-                                  'Score',
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                                SizedBox(height: 8),
-                                Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    SizedBox(
-                                      width: 80, // Adjust width
-                                      height: 80, // Adjust height
-                                      child: CircularProgressIndicator(
-                                        value: 0.75, // Progress value
-                                        strokeWidth: 12, // Thickness of the progress bar
-                                        backgroundColor: Colors.grey.shade300,
-                                        color: const Color.fromRGBO(170, 200, 86, 1),
-                                      ),
-                                    ),
-                                    Text(
-                                      '75',
-                                      style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
-                                        color: const Color.fromRGBO(170, 200, 86, 1),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 16),
-                        ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromRGBO(50, 50, 50, 1),
-                            minimumSize: Size(double.infinity, 40),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          child: Text(
-                            'More Details',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    ),
+                ClipPath(
+                  clipper: WaveClipperOne(reverse: false, flip: true), // Creates a wavy shape
+                  child: Container(
+                    height: 180,
+                    width: double.infinity, // Ensures it spans the full width
+                    color: const Color.fromRGBO(86, 170, 200, 1), // Background color
                   ),
                 ),
-                Spacer(),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromRGBO(86, 170, 200, 1),
-                    minimumSize: Size(double.infinity, 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10), // Set border radius to 10
+                Positioned(
+                  left: 16,
+                  bottom: 50,
+                  child: Text(
+                    "Hello Driver!",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Start Trip',
-                        style: TextStyle(
-                          color: const Color.fromRGBO(255, 255, 255, 1),
-                          fontSize: 22,
-                        ), // Text color set to white
-                      ),
-                      SizedBox(width: 8), // Spacing between text and icon
-                      Icon(
-                        Icons.directions_car,
-                        color: const Color.fromRGBO(255, 255, 255, 1), // Set icon color to white
-                      ),
-                    ],
                   ),
                 ),
               ],
             ),
-          ),
-        ],
+            // Rest of the UI inside Padding
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 20), // Add spacing after the stack
+                  Card(
+                    color: const Color.fromRGBO(225, 225, 225, 1),
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            'Last Trip',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: const Color.fromRGBO(112, 112, 112, 1),
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Container(
+                            height: 150,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: const Color.fromRGBO(163, 163, 163, 0.5),
+                            ),
+                            child: Center(
+                              child: Text(
+                                'Map Placeholder',
+                                style: TextStyle(color: Colors.black45),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Date:',
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                  Text(
+                                    '24/10/2024',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 8),
+                                  Text(
+                                    'Distance Traveled:',
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                  Text(
+                                    '36 Kms',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  Text(
+                                    'Score',
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                  SizedBox(height: 8),
+                                  Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      SizedBox(
+                                        width: 80, // Adjust width
+                                        height: 80, // Adjust height
+                                        child: CircularProgressIndicator(
+                                          value: 0.75, // Progress value
+                                          strokeWidth: 12, // Thickness of the progress bar
+                                          backgroundColor: Colors.grey.shade300,
+                                          color: const Color.fromRGBO(170, 200, 86, 1),
+                                        ),
+                                      ),
+                                      Text(
+                                        '75',
+                                        style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                          color: const Color.fromRGBO(170, 200, 86, 1),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 16),
+                          ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color.fromRGBO(50, 50, 50, 1),
+                              minimumSize: Size(double.infinity, 40),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            child: Text(
+                              'More Details',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromRGBO(86, 170, 200, 1),
+                      minimumSize: Size(double.infinity, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10), // Set border radius to 10
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Start Trip',
+                          style: TextStyle(
+                            color: const Color.fromRGBO(255, 255, 255, 1),
+                            fontSize: 22,
+                          ), // Text color set to white
+                        ),
+                        SizedBox(width: 8), // Spacing between text and icon
+                        Icon(
+                          Icons.directions_car,
+                          color: const Color.fromRGBO(255, 255, 255, 1), // Set icon color to white
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
