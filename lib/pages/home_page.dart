@@ -1,163 +1,183 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:sensors_plus/sensors_plus.dart';
-import '../filters/moving_average_filter.dart';
-import 'dart:math';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
-
-  @override
-  State<HomePage> createState() => _HomePageState();
+void main() {
+  runApp(MyApp());
 }
 
-class _HomePageState extends State<HomePage> {
-  bool isTracking = false;
-  Stream<Position>? positionStream;
-  double currentSpeed = 0.0;
-  double acceleration = 0.0;
-  double rotationRate = 0.0;
-
-  // For filtering
-  late MovingAverageFilter accelerationFilter;
-
+class MyApp extends StatelessWidget {
   @override
-  void initState() {
-    super.initState();
-    requestPermissions();
-    accelerationFilter = MovingAverageFilter(windowSize: 5);
-    startAccelerometerTracking();
-    startGyroscopeTracking();
-  }
-
- Future<void> requestPermissions() async {
-    // Request location and activity recognition permissions
-    await Permission.locationWhenInUse.request();
-    await Permission.activityRecognition.request();
-    if (await Permission.locationWhenInUse.isDenied) {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text("Permissions Denied"),
-          content: const Text("Location permissions are required for tracking."),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text("OK"),
-            ),
-          ],
-        ),
-      );
-    }
-  }
-
-
-  // Start GPS tracking
-  void startTracking() {
-    positionStream = Geolocator.getPositionStream(
-      locationSettings: const LocationSettings(
-        accuracy: LocationAccuracy.best,
-        distanceFilter: 5, // meters
-      ),
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: HomePage(),
     );
-
-    positionStream?.listen((Position position) {
-      setState(() {
-        currentSpeed = position.speed * 3.6; // convert m/s to km/h
-      });
-      print(
-          'Latitude: ${position.latitude}, Longitude: ${position.longitude}, Speed: $currentSpeed km/h');
-    });
   }
+}
 
-  // Tracking acceleration using Accelerometer
-  void startAccelerometerTracking() {
-    accelerometerEvents.listen((AccelerometerEvent event) {
-      double rawAcceleration = sqrt(event.x * event.x + event.y * event.y + event.z * event.z);
-
-      // Apply Moving Average Filter
-      double smoothedAcceleration = accelerationFilter.apply(rawAcceleration);
-
-      setState(() {
-        acceleration = smoothedAcceleration;
-      });
-
-      // print('Raw Acceleration: $rawAcceleration, Smoothed Acceleration: $smoothedAcceleration');
-    });
-  }
-
-    // Tracking sharp turns using Gyroscope
-  void startGyroscopeTracking() {
-    gyroscopeEvents.listen((GyroscopeEvent event) {
-      setState(() {
-        rotationRate = event.y;
-      });
-      if (rotationRate > 3.0 || rotationRate < -3.0) {
-        // print('Sharp turn detected! Rotation rate: $rotationRate');
-      }
-    });
-  }
-
-   // Toggle start/stop tracking
-  void toggleTracking() {
-    if (isTracking) {
-      setState(() {
-        isTracking = false;
-        positionStream = null;
-        currentSpeed = 0.0;
-        acceleration = 0.0;
-        rotationRate = 0.0;
-      });
-    } else {
-      setState(() {
-        isTracking = true;
-        startTracking();
-      });
-    }
-  }
-
-
+class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('DriveWise Home'),
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: Colors.blue.shade300,
+        title: Text(
+          'Hello John,',
+          style: TextStyle(color: Colors.white, fontSize: 20),
+        ),
+        centerTitle: false,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.notifications, color: Colors.white),
+            onPressed: () {},
+          ),
+        ],
       ),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              isTracking ? 'Tracking Started' : 'Tracking Stopped',
-              style: const TextStyle(fontSize: 20),
+              "Let's Start!",
+              style: TextStyle(fontSize: 16, color: Colors.blueGrey),
             ),
-            const SizedBox(height: 20),
-            Text(
-              'Speed: ${currentSpeed.toStringAsFixed(2)} km/h',
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              'Acceleration: ${acceleration.toStringAsFixed(2)} m/s²',
-              style: const TextStyle(fontSize: 18),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              'Rotation Rate: ${rotationRate.toStringAsFixed(2)} rad/s',
-              style: const TextStyle(fontSize: 18),
-            ),
-            const SizedBox(height: 40),
-            ElevatedButton(
-              onPressed: toggleTracking,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: isTracking ? Colors.red : Colors.green,
-                splashFactory: NoSplash.splashFactory,
+            SizedBox(height: 20),
+            Card(
+              elevation: 3,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
               ),
-              child: Text(isTracking ? 'Stop Trip' : 'Start Trip'),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    Text(
+                      'Last Trip',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Container(
+                      height: 150,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.grey.shade300,
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Map Placeholder',
+                          style: TextStyle(color: Colors.black45),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Date:',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            Text(
+                              '24/10/2024',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              'Distance Traveled:',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            Text(
+                              '36 Kms',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Text(
+                              'Score',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            SizedBox(height: 8),
+                            Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                CircularProgressIndicator(
+                                  value: 0.75,
+                                  strokeWidth: 8,
+                                  backgroundColor: Colors.grey.shade300,
+                                  color: Colors.green,
+                                ),
+                                Text(
+                                  '75',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black,
+                      ),
+                      child: Text('More Details'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Spacer(),
+            ElevatedButton.icon(
+              onPressed: () {},
+              icon: Icon(Icons.directions_car),
+              label: Text('Start Trip'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.lightBlue.shade300,
+                minimumSize: Size(double.infinity, 50),
+              ),
+            ),
+            SizedBox(height: 16),
+            BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              selectedItemColor: Colors.blue,
+              unselectedItemColor: Colors.grey,
+              items: [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.history),
+                  label: 'My Trips',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.leaderboard),
+                  label: 'Leaderboard',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person),
+                  label: 'Profile',
+                ),
+              ],
             ),
           ],
         ),
