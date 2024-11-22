@@ -11,6 +11,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(248, 244, 234, 1),
       appBar: AppBar(
+        toolbarHeight: 35,
         backgroundColor: const Color.fromRGBO(86, 170, 200, 1),
         actions: [
           IconButton(
