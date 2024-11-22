@@ -1,7 +1,6 @@
 import 'package:drive_wise/pages/first_page.dart';
 import 'package:drive_wise/pages/home_page.dart';
 import 'package:flutter/material.dart';
-import 'gps.dart';
 import 'package:drive_wise/pages/login_screen.dart'; // Import the LoginScreen
 
 Future<void> main() async {
@@ -17,7 +16,7 @@ class DriveWise extends StatefulWidget {
 }
 
 class _DriveWiseState extends State<DriveWise> {
-  bool isLoggedIn = false; // Track the user's login status
+  bool isLoggedIn = true; // Track the user's login status //changed to true for dev purpose
 
   // Callback function to update login state when login is successful
   void _onLoginSuccess() {

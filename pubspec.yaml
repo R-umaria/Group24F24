@@ -9,6 +9,7 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
+  flutter_custom_clippers: ^2.0.0
   sensors_plus: ^6.1.0
   geolocator: ^13.0.1
   http: ^1.1.0
