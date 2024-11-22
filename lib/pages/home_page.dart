@@ -12,11 +12,6 @@ class HomePage extends StatelessWidget {
       backgroundColor: const Color.fromRGBO(248, 244, 234, 1),
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(86, 170, 200, 1),
-        title: Text(
-          "DriveWise",
-          style: TextStyle(color: Colors.white, fontSize: 20),
-        ),
-        centerTitle: false,
         actions: [
           IconButton(
             icon: Icon(Icons.notifications, color: Colors.white),
@@ -72,7 +67,7 @@ class HomePage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 20), // Add spacing after the stack
+                  SizedBox(height: 10), // Add spacing after the stack
                   Card(
                     color: const Color.fromRGBO(225, 225, 225, 1),
                     elevation: 3,
@@ -144,7 +139,7 @@ class HomePage extends StatelessWidget {
                                         child: CircularProgressIndicator(
                                           value: 0.75, // Progress value
                                           strokeWidth: 12, // Thickness of the progress bar
-                                          backgroundColor: Colors.grey.shade300,
+                                          backgroundColor: const Color.fromRGBO(0, 0, 0, 0.05),
                                           color: const Color.fromRGBO(170, 200, 86, 1),
                                         ),
                                       ),

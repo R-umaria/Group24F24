@@ -33,37 +33,43 @@ class _FirstPageState extends State<FirstPage> {
 
     // ProfilePage
     ProfilePage()
-
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: _pages[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _navigateBottomBar,
-        backgroundColor: Color.fromARGB(255, 225, 225, 225),
-        items: [
-          // home
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home'
-          ),
+      bottomNavigationBar: Container(
+        height: 60, // Decrease the height of the BottomNavigationBar
+        child: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: _navigateBottomBar,
+          backgroundColor: Color.fromRGBO(225, 225, 225, 1),
+          selectedItemColor: Color.fromRGBO(50, 50, 50, 1), // Set color for selected item (icon and label)
+          unselectedItemColor: Color.fromRGBO(112, 112, 112, 1), // Set color for unselected item (icon and label)
+          selectedLabelStyle: TextStyle(color: Color.fromRGBO(50, 50, 50, 1)), // Set selected label color
+          unselectedLabelStyle: TextStyle(color: Color.fromRGBO(112, 112, 112, 1)), // Set unselected label color
+          items: [
+            // home
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
 
-          // LeaderBoard
-          BottomNavigationBarItem(
-            icon: Icon(Icons.stacked_line_chart),
-            label: 'LeaderBoard'
-          ),
+            // LeaderBoard
+            BottomNavigationBarItem(
+              icon: Icon(Icons.stacked_line_chart),
+              label: 'LeaderBoard',
+            ),
 
-          // Profile
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile'
-          ),
+            // Profile
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Profile',
+            ),
           ],
         ),
-      );
+      ),
+    );
   }
 }
