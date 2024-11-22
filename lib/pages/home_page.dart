@@ -18,10 +18,11 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(248, 244, 234, 1),
       appBar: AppBar(
-        backgroundColor: Colors.blue.shade300,
+        backgroundColor: const Color.fromRGBO(86, 170, 200, 0.7),
         title: Text(
-          'Hello John,',
+          "DriveWise",
           style: TextStyle(color: Colors.white, fontSize: 20),
         ),
         centerTitle: false,
@@ -37,12 +38,9 @@ class HomePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "Let's Start!",
-              style: TextStyle(fontSize: 16, color: Colors.blueGrey),
-            ),
             SizedBox(height: 20),
             Card(
+              color: const Color.fromRGBO(225, 225, 225, 1),
               elevation: 3,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
@@ -56,6 +54,7 @@ class HomePage extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
+                        color: const Color.fromRGBO(112, 112, 112, 1),
                       ),
                     ),
                     SizedBox(height: 10),
@@ -63,7 +62,7 @@ class HomePage extends StatelessWidget {
                       height: 150,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        color: Colors.grey.shade300,
+                        color: const Color.fromRGBO(163, 163, 163, 0.5),
                       ),
                       child: Center(
                         child: Text(
@@ -114,17 +113,22 @@ class HomePage extends StatelessWidget {
                             Stack(
                               alignment: Alignment.center,
                               children: [
-                                CircularProgressIndicator(
-                                  value: 0.75,
-                                  strokeWidth: 8,
-                                  backgroundColor: Colors.grey.shade300,
-                                  color: Colors.green,
+                                SizedBox(
+                                  width: 80, // Adjust width
+                                  height: 80, // Adjust height
+                                  child: CircularProgressIndicator(
+                                    value: 0.75, // Progress value
+                                    strokeWidth: 12, // Thickness of the progress bar
+                                    backgroundColor: Colors.grey.shade300,
+                                    color: const Color.fromRGBO(170, 200, 86, 1),
+                                  ),
                                 ),
                                 Text(
                                   '75',
                                   style: TextStyle(
-                                    fontSize: 20,
+                                    fontSize: 24,
                                     fontWeight: FontWeight.bold,
+                                    color: const Color.fromRGBO(170, 200, 86, 1),
                                   ),
                                 ),
                               ],
@@ -137,47 +141,43 @@ class HomePage extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black,
+                        backgroundColor: const Color.fromRGBO(50, 50, 50, 1),
+                        minimumSize: Size(double.infinity, 40),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
                       ),
-                      child: Text('More Details'),
+                      child: Text(
+                              'More Details',
+                              style: TextStyle(color: Colors.white),
+                            ),
                     ),
                   ],
                 ),
               ),
             ),
             Spacer(),
-            ElevatedButton.icon(
+            ElevatedButton(
               onPressed: () {},
-              icon: Icon(Icons.directions_car),
-              label: Text('Start Trip'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.lightBlue.shade300,
+                backgroundColor: const Color.fromRGBO(86, 170, 200, 1),
                 minimumSize: Size(double.infinity, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10), // Set border radius to 10
+                ),
               ),
-            ),
-            SizedBox(height: 16),
-            BottomNavigationBar(
-              type: BottomNavigationBarType.fixed,
-              selectedItemColor: Colors.blue,
-              unselectedItemColor: Colors.grey,
-              items: [
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: 'Home',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.history),
-                  label: 'My Trips',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.leaderboard),
-                  label: 'Leaderboard',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.person),
-                  label: 'Profile',
-                ),
-              ],
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Start Trip',
+                    style: TextStyle(color: const Color.fromRGBO(255, 255, 255, 1), fontSize: 22), // Text color set to white
+                  ),
+                  SizedBox(width: 8), // Spacing between text and icon
+                  Icon(
+                    Icons.directions_car,
+                    color: const Color.fromRGBO(255, 255, 255, 1), // Set icon color to white
+                  ),
+                ],
+              ),
             ),
           ],
         ),
