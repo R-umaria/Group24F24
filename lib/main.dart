@@ -1,7 +1,6 @@
 import 'package:drive_wise/pages/first_page.dart';
 import 'package:drive_wise/pages/home_page.dart';
 import 'package:flutter/material.dart';
-import 'gps.dart';
 import 'package:drive_wise/pages/login_screen.dart'; // Import the LoginScreen
 
 Future<void> main() async {

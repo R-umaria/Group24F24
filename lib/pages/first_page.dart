@@ -4,6 +4,7 @@ import 'package:drive_wise/pages/home_page.dart';
 import 'package:drive_wise/pages/leader_board_page.dart';
 import 'package:drive_wise/pages/my_trips.dart';
 import 'package:drive_wise/pages/profile_page.dart';
+import 'awards_page.dart';
 import 'package:flutter/material.dart';
 
 class FirstPage extends StatefulWidget {
@@ -36,7 +37,10 @@ class _FirstPageState extends State<FirstPage> {
     LeaderBoardPage(),
 
     // ProfilePage
-    ProfilePage()
+    ProfilePage(),
+
+    // //added the awards page
+    // AwardsPage() 
   ];
 
   @override
@@ -70,14 +74,20 @@ class _FirstPageState extends State<FirstPage> {
             icon: Icon(Icons.stacked_line_chart),
             label: 'LeaderBoard',
           ),
+    
+          // //awards page
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.emoji_events),
+          //   label: 'Awards'
+          // ),
 
           // Profile
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Profile',
           ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
   }
 }
