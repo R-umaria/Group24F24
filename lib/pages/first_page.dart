@@ -4,7 +4,8 @@ import 'package:drive_wise/pages/home_page.dart';
 import 'package:drive_wise/pages/leader_board_page.dart';
 import 'package:drive_wise/pages/my_trips.dart';
 import 'package:drive_wise/pages/profile_page.dart';
-import 'awards_page.dart';
+import './Awards/awards_page.dart';
+import './Awards/award_backend.dart';
 import 'package:flutter/material.dart';
 
 class FirstPage extends StatefulWidget {
@@ -25,23 +26,31 @@ class _FirstPageState extends State<FirstPage> {
     });
   }
 
+  //create an instance of the award backend to use for the awrds page
+  final awardsManager1 = AwardsManager();
+  late final List _pages;
+  
   // the pages we have in our app
-  final List _pages = [
-    // HomePage
-    HomePage(),
-    
-    // My Trips
-    MyTrips(),
+    @override
+  void initState() {
+    super.initState();
+      _pages = [
+      // HomePage
+      HomePage(),
+      
+      // My Trips
+      MyTrips(),
 
-    // LeaderBoardpage
-    LeaderBoardPage(),
+      // LeaderBoardpage
+      LeaderBoardPage(),
 
-    // ProfilePage
-    ProfilePage(),
+      //added the awards page
+      AwardsPage(awardsManager: awardsManager1,),
 
-    // //added the awards page
-    // AwardsPage() 
-  ];
+      // ProfilePage
+      ProfilePage()
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,11 +84,11 @@ class _FirstPageState extends State<FirstPage> {
             label: 'LeaderBoard',
           ),
     
-          // //awards page
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.emoji_events),
-          //   label: 'Awards'
-          // ),
+          //awards page
+          BottomNavigationBarItem(
+            icon: Icon(Icons.emoji_events),
+            label: 'Awards'
+          ),
 
           // Profile
           BottomNavigationBarItem(

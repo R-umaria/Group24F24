@@ -104,9 +104,9 @@ class SpeedAnalysisTimer {
   //update the duration
   void update() {
   if (_currentState == SpeedState.warning) {
-    _warningStateDuration += Duration(seconds: 1);
+    _warningStateDuration += const Duration(seconds: 1);
   } else if (_currentState == SpeedState.dangerous) {
-    _dangerousStateDuration += Duration(seconds: 1);
+    _dangerousStateDuration += const Duration(seconds: 1);
   }
 }
 }
