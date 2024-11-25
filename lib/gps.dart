@@ -2,6 +2,8 @@
 //GPS tracking functionality - for tracking the user's location during a trip
 //NOTE: you can access the current lat and long in your files by using the variables: currentLatitude and currentLongitude
 
+// ignore_for_file: unused_element
+
 import 'dart:async';//so location tracking can work async with rest of app
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
