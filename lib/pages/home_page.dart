@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart'; // Add this package to pubspec.yaml
 import 'package:drive_wise/gps.dart'; // Import the GPS tracking module
+import 'package:drive_wise/sensors.dart'; // Import sensors tracking
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,11 +14,31 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool isTripActive = false; // Track if the trip is active
+  final SensorData _sensorData = SensorData(); // Instance of SensorData
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Event handler for detected sensor events
+    _sensorData.onEventDetected = (event) {
+      debugPrint(event); // Log detected events in terminal
+    };
+  }
+
+  @override
+  void dispose() {
+    _sensorData.stopSensors(); // Stop sensors if the widget is disposed
+    super.dispose();
+  }
 
   // Function to toggle trip start/stop
   void _toggleTrip() async {
     if (isTripActive) {
-      stopGpsTracking(); // Stop GPS tracking
+      // Stop GPS and sensor tracking
+      stopGpsTracking();
+      _sensorData.stopSensors();
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text("Trip stopped!"),
@@ -25,7 +46,10 @@ class _HomePageState extends State<HomePage> {
         ),
       );
     } else {
-      await gpsTracking(); // Start GPS tracking
+      // Start GPS and sensor tracking
+      await gpsTracking();
+      _sensorData.startSensors();
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text("Trip started!"),
