@@ -1,11 +1,16 @@
+// File path: lib/auto_trip.dart
 import 'package:flutter/material.dart';
 import 'package:drive_wise/gps.dart';
 import 'package:drive_wise/sensors.dart';
-import 'package:pedometer/pedometer.dart'; // Ensure correct version in pubspec.yaml
-import 'dart:math'; // Import for math functions like sqrt, sin, cos, etc.
+import 'package:drive_wise/vehicle_speed.dart'; // Speed tracking manager
+import 'package:drive_wise/database_helper.dart'; // Database helper
+import 'package:pedometer/pedometer.dart'; // Step counter for auto trip functionality
+import 'dart:math'; // For math functions like sqrt, sin, cos, etc.
 
 class AutoTripManager {
   final SensorData _sensorData = SensorData();
+  final VehicleSpeedManager _speedManager = VehicleSpeedManager();
+  final DatabaseHelper _dbHelper = DatabaseHelper(); // Database instance
   Stream<StepCount>? _stepCountStream;
   bool isTripActive = false;
   int? lastStepCount;
@@ -52,7 +57,7 @@ class AutoTripManager {
           distanceMoved > locationChangeThreshold &&
           (lastStepCount == null || lastStepCount! == 0)) {
         isTripActive = true;
-        _startTrip(context);
+        _startTrip(context, currentLat, currentLng);
       }
 
       // Conditions to stop a trip
@@ -61,18 +66,33 @@ class AutoTripManager {
           lastStepCount != null &&
           lastStepCount! >= stepStopThreshold) {
         isTripActive = false;
-        _stopTrip(context);
+        _stopTrip(context, currentLat, currentLng);
       }
 
       // Update last location
       lastLatitude = currentLat;
       lastLongitude = currentLng;
     });
+
+    // Monitor sensor events
+    _sensorData.onEventDetected = (eventType) async {
+      if (isTripActive) {
+        final currentLat = currentLatitude ?? 0.0;
+        final currentLng = currentLongitude ?? 0.0;
+        final currentSpeed = await _speedManager.getCurrentSpeed();
+        _logEvent(eventType, currentLat, currentLng, currentSpeed);
+      }
+    };
   }
 
-  void _startTrip(BuildContext context) {
-    // Start sensors
+  void _startTrip(BuildContext context, double lat, double lng) async {
+    // Start sensors and speed tracking
     _sensorData.startSensors();
+    _speedManager.startSpeedTracking();
+
+    final speed = await _speedManager.getCurrentSpeed();
+    _logEvent("start", lat, lng, speed);
+
     // Notify UI
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -82,10 +102,15 @@ class AutoTripManager {
     );
   }
 
-  void _stopTrip(BuildContext context) {
-    // Stop sensors
+  void _stopTrip(BuildContext context, double lat, double lng) async {
+    // Stop sensors and speed tracking
     _sensorData.stopSensors();
+    _speedManager.stopSpeedTracking();
     stopGpsTracking();
+
+    final speed = await _speedManager.getCurrentSpeed();
+    _logEvent("stop", lat, lng, speed);
+
     // Notify UI
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -93,6 +118,18 @@ class AutoTripManager {
         duration: Duration(seconds: 2),
       ),
     );
+  }
+
+  void _logEvent(String eventType, double lat, double lng, double speed) async {
+    final timestamp = DateTime.now().toIso8601String();
+    await _dbHelper.insertEvent({
+      'event_type': eventType,
+      'timestamp': timestamp,
+      'latitude': lat,
+      'longitude': lng,
+      'speed': speed,
+    });
+    print("Logged $eventType: $timestamp, Lat: $lat, Lng: $lng, Speed: $speed");
   }
 
   // Utility function to calculate distance between two coordinates
