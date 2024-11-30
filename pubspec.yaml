@@ -17,6 +17,8 @@ dependencies:
   scidart: ^0.0.1 
   savgol: ^0.1.0+4
   pedometer: ^4.0.2
+  sqflite: ^2.4.1
+  path: ^1.8.3
 
 
 dev_dependencies:

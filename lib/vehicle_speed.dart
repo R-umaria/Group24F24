@@ -4,7 +4,7 @@ import 'package:geolocator/geolocator.dart';
 
 class VehicleSpeedManager {
   StreamSubscription<Position>? _speedStreamSubscription;
-  double currentSpeed = 0.0; // Current speed in meters per second
+  double _currentSpeed = 0.0; // Current speed in meters per second
 
   // Start tracking vehicle speed
   void startSpeedTracking() {
@@ -17,8 +17,8 @@ class VehicleSpeedManager {
         Geolocator.getPositionStream(locationSettings: locationSettings)
             .listen((Position position) {
       if (position.speed >= 0) {
-        currentSpeed = position.speed; // Speed in m/s
-        debugPrint('Current speed: ${_formatSpeed(currentSpeed)}');
+        _currentSpeed = position.speed; // Speed in m/s
+        debugPrint('Current speed: ${_formatSpeed(_currentSpeed)}');
       }
     });
   }
@@ -34,6 +34,11 @@ class VehicleSpeedManager {
     }
   }
 
+  // Get the current speed in meters per second
+  double getCurrentSpeed() {
+    return _currentSpeed;
+  }
+
   // Format speed to km/h (kilometers per hour)
   String _formatSpeed(double speedInMetersPerSecond) {
     final speedKmPerHour = speedInMetersPerSecond * 3.6; // Convert m/s to km/h
@@ -42,6 +47,6 @@ class VehicleSpeedManager {
 
   // Get the current speed formatted as km/h
   String getFormattedSpeed() {
-    return _formatSpeed(currentSpeed);
+    return _formatSpeed(_currentSpeed);
   }
 }
