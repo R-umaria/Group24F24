@@ -25,9 +25,13 @@ Future<void> gpsTracking() async {
 
 //call when trip is over, to stop the location tracking. cancels location stream subscription
 void stopGpsTracking() {
-  _positionStreamSubscription?.cancel();
-  _positionStreamSubscription = null;
-  debugPrint('Location tracking stopped');
+  if (_positionStreamSubscription != null) {
+    _positionStreamSubscription?.cancel();
+    _positionStreamSubscription = null;
+    debugPrint('Location tracking stopped');
+  } else {
+    debugPrint('No active location tracking to stop.');
+  }
 }
 
 
@@ -45,10 +49,18 @@ Future<void> _requestLocationPermission() async {
 
 //get the current location of the device with the geolocator positionstream
 void _getCurrentLocation() {
-  _positionStreamSubscription = Geolocator.getPositionStream().listen((Position position) {
+  const LocationSettings locationSettings = LocationSettings(
+    accuracy: LocationAccuracy.high, // High accuracy for precise updates
+    distanceFilter: 5, // Trigger an update every 100 meters
+  );
+
+  _positionStreamSubscription =
+      Geolocator.getPositionStream(locationSettings: locationSettings)
+          .listen((Position position) {
     _logLocation(position);
   });
 }
+
 
 void _storeLocationInfo() {
   // will store the location info once we decide what/how often info needs to be stored
