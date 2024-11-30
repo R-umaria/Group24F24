@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:drive_wise/gps.dart';
 import 'package:drive_wise/sensors.dart';
+import 'package:drive_wise/vehicle_speed.dart'; // Import the new speed tracking manager
 import 'package:pedometer/pedometer.dart'; // Ensure correct version in pubspec.yaml
 import 'dart:math'; // Import for math functions like sqrt, sin, cos, etc.
 
 class AutoTripManager {
   final SensorData _sensorData = SensorData();
+  final VehicleSpeedManager _speedManager = VehicleSpeedManager(); // Instance of the speed manager
   Stream<StepCount>? _stepCountStream;
   bool isTripActive = false;
   int? lastStepCount;
@@ -71,8 +73,10 @@ class AutoTripManager {
   }
 
   void _startTrip(BuildContext context) {
-    // Start sensors
+    // Start sensors and speed tracking
     _sensorData.startSensors();
+    _speedManager.startSpeedTracking();
+
     // Notify UI
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -83,9 +87,11 @@ class AutoTripManager {
   }
 
   void _stopTrip(BuildContext context) {
-    // Stop sensors
+    // Stop sensors and speed tracking
     _sensorData.stopSensors();
+    _speedManager.stopSpeedTracking();
     stopGpsTracking();
+
     // Notify UI
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
