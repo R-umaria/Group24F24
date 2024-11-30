@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, must_be_immutable, prefer_final_fields
 
 import 'package:drive_wise/pages/home_page.dart';
-import 'package:drive_wise/pages/leader_board_page.dart';
+import 'package:drive_wise/pages/Leaderboard/leaderboard_page.dart';
 import 'package:drive_wise/pages/my_trips.dart';
 import 'package:drive_wise/pages/profile_page.dart';
 import './Awards/awards_page.dart';
@@ -42,7 +42,7 @@ class _FirstPageState extends State<FirstPage> {
       MyTrips(),
 
       // LeaderBoardpage
-      LeaderBoardPage(),
+      LeaderboardPage(),
 
       //added the awards page
       AwardsPage(awardsManager: awardsManager1,),
@@ -81,7 +81,7 @@ class _FirstPageState extends State<FirstPage> {
           // LeaderBoard
           BottomNavigationBarItem(
             icon: Icon(Icons.stacked_line_chart),
-            label: 'LeaderBoard',
+            label: 'Leaderboard',
           ),
     
           //awards page
