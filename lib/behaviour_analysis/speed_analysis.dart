@@ -75,7 +75,7 @@ class SpeedAnalysisTimer {
   DateTime? _stateEntryTime; //time when the driver enters a specific state
   Duration _warningStateDuration = Duration.zero; //total warning state time
   Duration _dangerousStateDuration = Duration.zero; //total dangeours state time
-
+  
  //updates state and calculates duration of the previous state
   void updateState(SpeedState newState) {
     if (newState != _currentState) {
@@ -131,6 +131,19 @@ class SpeedAnalysisTimer {
     debugPrint('safe state percent: ${safePercentage.toStringAsFixed(2)}%');
   }
 
+//for the danger popup for speed:
+class SpeedStateNotifier extends ChangeNotifier {
+  SpeedState _state = SpeedState.safe;
+  SpeedState get state => _state;
+
+  void updateState(SpeedState newState) {
+    if (_state != newState) {
+      _state = newState;
+      notifyListeners();
+    }
+  }
+}
+
 //---------------------------------------------------------------------------------
 //-----------------simulation!!! only for testing purposes ------------------------
 //---------------------------------------------------------------------------------
@@ -174,4 +187,5 @@ class SpeedTrackingSimulation {
     return baseSpeed + speedVariation;
   }
 }
+
 
