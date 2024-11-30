@@ -1,3 +1,6 @@
+//Andy Guest - Nov 20 2024
+//frontend for the awards page
+
 import 'package:flutter/material.dart';
 import './award_backend.dart';
 
