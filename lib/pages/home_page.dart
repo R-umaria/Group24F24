@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart'; // Add this package to pubspec.yaml
 import 'package:drive_wise/gps.dart'; // Import the GPS tracking module
 import 'package:drive_wise/sensors.dart'; // Import sensors tracking
+import 'package:drive_wise/auto_trip.dart'; // Import Auto Trip Manager
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,24 +16,32 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool isTripActive = false; // Track if the trip is active
   final SensorData _sensorData = SensorData(); // Instance of SensorData
+  final AutoTripManager _autoTripManager = AutoTripManager(); // Instance of AutoTripManager
 
   @override
   void initState() {
     super.initState();
 
+    // Start auto trip monitoring
+    _autoTripManager.startMonitoring(context);
+
     // Event handler for detected sensor events
     _sensorData.onEventDetected = (event) {
       debugPrint(event); // Log detected events in terminal
     };
+
+    // Sync AutoTripManager's state with HomePage state
+    _autoTripManager.isTripActive = isTripActive;
   }
 
   @override
   void dispose() {
     _sensorData.stopSensors(); // Stop sensors if the widget is disposed
+    stopGpsTracking(); // Stop GPS tracking
     super.dispose();
   }
 
-  // Function to toggle trip start/stop
+  // Function to manually toggle trip start/stop
   void _toggleTrip() async {
     if (isTripActive) {
       // Stop GPS and sensor tracking
@@ -58,9 +67,10 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    // Update the state
+    // Update the state and sync with AutoTripManager
     setState(() {
       isTripActive = !isTripActive;
+      _autoTripManager.isTripActive = isTripActive;
     });
   }
 
@@ -237,7 +247,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: _toggleTrip, // Link the function
+                    onPressed: _toggleTrip, // Manual trip toggle
                     style: ElevatedButton.styleFrom(
                       backgroundColor: isTripActive
                           ? Colors.red // Red for "Stop Trip"

@@ -16,6 +16,8 @@ dependencies:
   permission_handler: ^11.1.1   # For permissions handling in Android
   scidart: ^0.0.1 
   savgol: ^0.1.0+4
+  pedometer: ^4.0.2
+
 
 dev_dependencies:
   flutter_test:
