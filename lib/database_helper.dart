@@ -9,7 +9,7 @@ class DatabaseHelper {
 
   DatabaseHelper._internal();
 
-  // Table name and columns
+  // Table name and columns for trip events
   static const String _tableName = 'trip_events';
   static const String _columnId = 'id';
   static const String _columnEventType = 'event_type';
@@ -18,6 +18,11 @@ class DatabaseHelper {
   static const String _columnLongitude = 'longitude';
   static const String _columnSpeed = 'speed';
 
+  // Table name and columns for settings
+  static const String _settingsTable = 'settings';
+  static const String _columnSettingKey = 'key';
+  static const String _columnSettingValue = 'value';
+
   // Initialize the database
   Future<Database> get database async {
     if (_database != null) return _database!;
@@ -25,15 +30,16 @@ class DatabaseHelper {
     return _database!;
   }
 
-  // Create the database and the table
+  // Create the database and the tables
   Future<Database> _initDatabase() async {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, 'trips.db');
     return await openDatabase(path, version: 1, onCreate: _createDatabase);
   }
 
-  // Create the 'trip_events' table
+  // Create the tables
   Future<void> _createDatabase(Database db, int version) async {
+    // Create trip_events table
     await db.execute(''' 
       CREATE TABLE $_tableName (
         $_columnId INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -42,6 +48,13 @@ class DatabaseHelper {
         $_columnLatitude REAL,
         $_columnLongitude REAL,
         $_columnSpeed REAL
+      )
+    ''');
+    // Create settings table
+    await db.execute('''
+      CREATE TABLE $_settingsTable (
+        $_columnSettingKey TEXT PRIMARY KEY,
+        $_columnSettingValue TEXT
       )
     ''');
   }
@@ -84,5 +97,31 @@ class DatabaseHelper {
     if (db != null) {
       await db.close();
     }
+  }
+
+  // Add methods to insert and retrieve settings
+  Future<void> saveSetting(String key, String value) async {
+    final db = await database;
+    await db.insert(
+      _settingsTable,
+      {
+        _columnSettingKey: key,
+        _columnSettingValue: value,
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<String?> getSetting(String key) async {
+    final db = await database;
+    final result = await db.query(
+      _settingsTable,
+      where: '$_columnSettingKey = ?',
+      whereArgs: [key],
+    );
+    if (result.isNotEmpty) {
+      return result.first[_columnSettingValue] as String;
+    }
+    return null;
   }
 }

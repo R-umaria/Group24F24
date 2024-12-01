@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:drive_wise/database_helper.dart'; // Mohammed_sujahat_ali - Added for DatabaseHelper
 
 //state based on the comparison between the current speed and the limit (based on our chosen thresholds)
 //currently set for city driving but adjusted thresholds will be added for highway driving later
@@ -188,4 +189,43 @@ class SpeedTrackingSimulation {
   }
 }
 
+// Mohammed_sujahat_ali - Added dynamic speed analysis function
+Future<SpeedAnalysis> dynamicAnalyzeSpeed(
+    double currentSpeed, DatabaseHelper dbHelper, SpeedAnalysisTimer timer) async {
+  final speedLimitSetting = await dbHelper.getSetting('speedLimit');
+  final notificationsEnabledSetting = await dbHelper.getSetting('notificationsEnabled');
 
+  int speedLimit = int.tryParse(speedLimitSetting ?? '60') ?? 60;
+  bool notificationsEnabled = notificationsEnabledSetting == 'true';
+
+  double speedDifference = currentSpeed - speedLimit;
+
+  if (speedDifference > 20.0) {
+    if (notificationsEnabled) {
+      debugPrint("DANGER: Speed exceeded by ${speedDifference.toStringAsFixed(1)} km/h.");
+    }
+    timer.updateState(SpeedState.dangerous);
+    return SpeedAnalysis(
+      state: SpeedState.dangerous,
+      message: 'DANGER: Exceeding speed by ${speedDifference.toStringAsFixed(1)} km/h.',
+      currentSpeed: currentSpeed,
+      speedLimit: speedLimit,
+    );
+  } else if (speedDifference > 12.0) {
+    timer.updateState(SpeedState.warning);
+    return SpeedAnalysis(
+      state: SpeedState.warning,
+      message: 'WARNING: ${speedDifference.toStringAsFixed(1)} km/h over the limit.',
+      currentSpeed: currentSpeed,
+      speedLimit: speedLimit,
+    );
+  } else {
+    timer.updateState(SpeedState.safe);
+    return SpeedAnalysis(
+      state: SpeedState.safe,
+      message: 'Safe driving within speed limit.',
+      currentSpeed: currentSpeed,
+      speedLimit: speedLimit,
+    );
+  }
+}
