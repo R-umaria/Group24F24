@@ -48,6 +48,7 @@ class AwardsManager {
       name: 'Perfect Speed',
       description: 'Stay in the safe speed zone for 100% of the trip',
       icon: Icons.speed_rounded,
+      isUnlocked: true,
     ),
     Award(
       id: 'perfect_trip',

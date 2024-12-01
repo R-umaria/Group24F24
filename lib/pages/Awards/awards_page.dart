@@ -15,10 +15,12 @@ class AwardsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(248, 244, 234, 1), //match to the main screen bg colour
       appBar: AppBar(
+        backgroundColor: const Color.fromRGBO(86, 170, 200, 1),
         title: const Text(
           'Awards',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
         centerTitle: true,
       ),
@@ -26,7 +28,15 @@ class AwardsPage extends StatelessWidget {
         children: [
           _buildProgressHeader(),
           Expanded(
-            child: _buildAwardsGrid(),
+            child: Container(
+              //bg for awards container
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: const Color.fromRGBO(225, 225, 225, 1),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: _buildAwardsGrid(),
+            ),
           ),
         ],
       ),
@@ -37,28 +47,45 @@ class AwardsPage extends StatelessWidget {
   Widget _buildProgressHeader() {
     int totalAwards = awardsManager.awards.length; //check how many awards exist currently
     double unlockedPercent = awardsManager.getUnlockedAwards().length / totalAwards;
-    double progressPercent = (unlockedPercent / totalAwards) * 100;
+    double progressPercent = (unlockedPercent) * 100;
 
     return Container(
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
-          Text(
-            '$progressPercent% Unlocked',
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const CircleAvatar(
+                backgroundColor: Color.fromRGBO(86, 170, 200, 1),
+                child: Text(
+                  'LD',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                '${progressPercent.toStringAsFixed(0)}% Unlocked',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 8),
           ClipRRect(
             borderRadius: BorderRadius.circular(15),
             child: LinearProgressIndicator(
               value: progressPercent/100,
-              minHeight: 20,
-              backgroundColor: const Color.fromARGB(255, 214, 210, 210),
+              minHeight: 16,
+              backgroundColor: const Color.fromRGBO(225, 225, 225, 1),
               valueColor: AlwaysStoppedAnimation<Color>(
-                progressPercent == 100 ? const Color.fromARGB(255, 7, 255, 15) : const Color.fromARGB(255, 73, 215, 227),
+                progressPercent == 100 ? const Color.fromARGB(255, 7, 255, 15) : const Color.fromRGBO(86, 170, 200, 1),
               ),
             ),
           ),
@@ -73,7 +100,7 @@ class AwardsPage extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        childAspectRatio: 0.85,
+        childAspectRatio: 1,
         crossAxisSpacing: 16,
         mainAxisSpacing: 16,
       ),
@@ -107,8 +134,8 @@ class _AwardCard extends StatelessWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: award.isUnlocked
-                ? [Colors.blue[400]!, Colors.blue[600]!] //i will change colours to match home page later
-                : [Colors.grey[300]!, Colors.grey[400]!],
+                ? [const Color.fromRGBO(86, 170, 200, 1),const Color.fromARGB(255, 75, 161, 192)] //i will change colours to match home page later
+                : [Colors.white, Colors.white],
           ),
         ),
         child: Material(
@@ -117,31 +144,32 @@ class _AwardCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
             onTap: () => _showAwardDetails(context), //open the info at the bottom when award is clicked on
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(8),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
                     award.icon,
-                    size: 48,
+                    size: 40,
                     color: award.isUnlocked ? Colors.white : Colors.grey[600],
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 6),
                   Text(
                     award.name,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 14, 
                       fontWeight: FontWeight.bold,
                       color: award.isUnlocked ? Colors.white : Colors.grey[800],
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 4),
                   Text(
                     award.isUnlocked ? 'Unlocked!' : 'Locked',
                     style: TextStyle(
-                      fontSize: 14,
-                      color: award.isUnlocked ? Colors.white70 : Colors.grey[600],
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: award.isUnlocked ? const Color.fromARGB(255, 217, 252, 120): Colors.grey[600],
                     ),
                   ),
                 ],
