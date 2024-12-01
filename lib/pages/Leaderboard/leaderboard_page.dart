@@ -30,6 +30,7 @@ class LeaderboardPageState extends State<LeaderboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(248, 244, 234, 1), //match to the main screen bg colour
       appBar: AppBar(
         title: const Text('Leaderboard', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
         backgroundColor: const Color.fromRGBO(86, 170, 200, 1),
@@ -55,7 +56,7 @@ class LeaderboardPageState extends State<LeaderboardPage> {
             Container(
               padding: const EdgeInsets.all(12.0),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: const Color.fromRGBO(225, 225, 225, 1),
                 borderRadius: BorderRadius.circular(16.0),
                 boxShadow: [
                   BoxShadow(
@@ -113,9 +114,9 @@ class LeaderboardItem extends StatelessWidget {
             //rank Icon
             Container(
               padding: const EdgeInsets.all(4.0),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: _getRankColor(rank),
+                color: Color.fromRGBO(86, 170, 200, 1),
               ),
               child: _getRankIcon(rank),
             ),
@@ -145,10 +146,10 @@ class LeaderboardItem extends StatelessWidget {
                   //score
                   Text(
                     '$score%',
-                    style: TextStyle(
+                    style:TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.bold,
-                      color: Colors.green[700],
+                       color: _getScoreColour(score),
                     ),
                   ),
                 ],
@@ -173,15 +174,16 @@ class LeaderboardItem extends StatelessWidget {
     }
   }
 
-  Color _getRankColor(int rank) {
-    if (rank == 1) {
-      return Colors.amber;  //first place, gold
-    } else if (rank == 2) {
-      return const Color.fromARGB(255, 224, 226, 124);  //second
-    } else if (rank == 3) {
-      return const Color.fromARGB(255, 178, 172, 134); //third place
-    } else {
-      return const Color.fromARGB(255, 167, 168, 169); //fourth and fifth
-    }
+}
+
+Color _getScoreColour(int score) {
+  if (score >= 80) {
+    return const Color.fromRGBO(170, 200, 86, 1);
+  }
+  else if (score >=60){
+    return const Color.fromRGBO(211, 158, 0, 1);
+  }
+  else{
+    return const Color.fromRGBO(168, 46, 12, 1);
   }
 }

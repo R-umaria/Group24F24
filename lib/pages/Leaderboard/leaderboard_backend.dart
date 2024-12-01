@@ -15,11 +15,11 @@ class LeaderboardEntry {
 //because neither the trip score or database is done yet this is hardcoded
 List<LeaderboardEntry> getTripScoreData() {
   return [
-    LeaderboardEntry(date: 'Linda - Nov 11', score: 100),
-    LeaderboardEntry(date: 'Linda - Nov 1', score: 55),
-    LeaderboardEntry(date: 'Linda - Nov 12', score: 73),
-    LeaderboardEntry(date: 'Linda - Nov 22', score: 99),
-    LeaderboardEntry(date: 'Linda - Nov 13', score: 65),
+    LeaderboardEntry(date: 'Trip #32 - Nov 11', score: 100),
+    LeaderboardEntry(date: 'Trip #12 - Nov 1', score: 55),
+    LeaderboardEntry(date: 'Trip #33 - Nov 12', score: 73),
+    LeaderboardEntry(date: 'Trip #45 - Nov 22', score: 99),
+    LeaderboardEntry(date: 'Trip #34 - Nov 13', score: 65),
   ];
 }
 
