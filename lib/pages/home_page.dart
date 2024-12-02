@@ -25,9 +25,9 @@ class _HomePageState extends State<HomePage> {
   bool isShortTrip = false;
   bool isLongTripWithoutBreaks = true;
   double averageSpeed = 50;
-  double topSpeed = 100;
-  double distanceTravel = 999;
-  double tripDurationHours = 10.0;
+  double topSpeed = 103;
+  double distanceTravel = 78;
+  double tripDurationHours = 1.6;
 
   @override
   void initState() {
