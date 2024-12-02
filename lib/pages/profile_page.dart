@@ -2,6 +2,7 @@
 //frontend for the profile page
 
 import 'package:flutter/material.dart';
+import './parental_settings.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -134,6 +135,10 @@ class ProfilePage extends StatelessWidget {
                   ElevatedButton(
                       onPressed: () {
                         //add link to parental settings here!!!
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ParentalSettingsPage()),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 50),
