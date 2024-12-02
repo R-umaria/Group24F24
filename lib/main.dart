@@ -2,6 +2,7 @@ import 'package:drive_wise/pages/first_page.dart';
 import 'package:drive_wise/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:drive_wise/pages/login_screen.dart'; // Import the LoginScreen
+import 'package:drive_wise/pages/parental_settings.dart'; // Import the ParentalSettingsPage
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,6 +37,7 @@ class _DriveWiseState extends State<DriveWise> {
       routes: {
         '/firstpage': (context) => const FirstPage(),
         '/homepage': (context) => const HomePage(),
+        '/parental_settings': (context) => ParentalSettingsPage(), // Add Parental Settings route
       },
     );
   }
