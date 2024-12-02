@@ -48,14 +48,6 @@ class _MyTripsState extends State<MyTrips> {
       ),
       body: Column(
         children: [
-          // Button to clear all trips
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              onPressed: _clearAllTrips,
-              child: Text("Clear All Data"),
-            ),
-          ),
           // ListView to display trips
           Expanded(
             child: ListView.builder(
@@ -77,6 +69,20 @@ class _MyTripsState extends State<MyTrips> {
                   ),
                 );
               },
+            ),
+          ),
+          // Button to clear all trips
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: _clearAllTrips,
+              child: Text("Clear All Data", style: TextStyle(color: Color.fromRGBO(255, 255, 255, 1)),),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromRGBO(49, 49, 49, 1),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),            
             ),
           ),
         ],
