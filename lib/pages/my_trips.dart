@@ -39,7 +39,13 @@ class _MyTripsState extends State<MyTrips> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("My Trips")),
+      backgroundColor: const Color.fromRGBO(248, 244, 234, 1), //match to the main screen bg colour
+      appBar: AppBar(
+        title: const Text('My Trips Log', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+        centerTitle: true,
+        backgroundColor: const Color.fromRGBO(86, 170, 200, 1),
+        elevation: 4.0,
+      ),
       body: Column(
         children: [
           // Button to clear all trips
@@ -56,10 +62,19 @@ class _MyTripsState extends State<MyTrips> {
               itemCount: _trips.length,
               itemBuilder: (context, index) {
                 final trip = _trips[index];
-                return ListTile(
-                  title: Text('Event: ${trip['event_type']}'),
-                  subtitle: Text(
-                      'Time: ${trip['timestamp']}\nLat: ${trip['latitude']}, Lng: ${trip['longitude']}, Speed: ${trip['speed']}'),
+                return Container(
+                    width: 800,
+                    margin: const EdgeInsets.symmetric(vertical: 3.0), // Optional for spacing
+                    decoration: BoxDecoration(
+                      color: const Color.fromRGBO(225, 225, 225, 1), // Background color of the ListTile
+                      borderRadius: BorderRadius.circular(8.0), // Optional rounded corners
+                    ),
+                    child: ListTile(
+                    title: Text('Event: ${trip['event_type']}'),
+                    subtitle: Text(
+                        'Time: ${trip['timestamp']}\nLat: ${trip['latitude']}, Lng: ${trip['longitude']}, Speed: ${trip['speed']}'
+                      ),
+                  ),
                 );
               },
             ),
