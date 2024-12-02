@@ -27,6 +27,7 @@ class TripDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(248, 244, 234, 1),
       appBar: AppBar(
         title: const Text('Trip Details'),
         backgroundColor: const Color.fromRGBO(86, 170, 200, 1),
@@ -40,7 +41,7 @@ class TripDetailsPage extends StatelessWidget {
               const Text(
                 'Trip Analysis',
                 style: TextStyle(
-                  fontSize: 30,
+                  fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -52,21 +53,7 @@ class TripDetailsPage extends StatelessWidget {
               _buildTextRow('Harsh Braking Instances:', '$harshBrakingInstances'),
               _buildTextRow('Sharp Turns:', '$sharpTurnInstances'),
               _buildTextRow('Trip Duration:', '${tripDurationHours.toStringAsFixed(1)} hours'),
-              const SizedBox(height: 30),
-              ElevatedButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text(
-                  'Back to Trip Score',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
-                  backgroundColor: const Color.fromRGBO(86, 170, 200, 1),
-                ),
-              ),
+            
             ],
           ),
         ),
@@ -82,7 +69,7 @@ class TripDetailsPage extends StatelessWidget {
           Text(
             label,
             style: const TextStyle(
-              fontSize: 20,
+              fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -90,7 +77,7 @@ class TripDetailsPage extends StatelessWidget {
           Text(
             value,
             style: const TextStyle(
-              fontSize: 20,
+              fontSize: 18,
             ),
           ),
         ],
