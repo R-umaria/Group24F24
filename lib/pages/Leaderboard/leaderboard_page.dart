@@ -33,6 +33,7 @@ class LeaderboardPageState extends State<LeaderboardPage> {
       backgroundColor: const Color.fromRGBO(248, 244, 234, 1), //match to the main screen bg colour
       appBar: AppBar(
         title: const Text('Leaderboard', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+        centerTitle: true,
         backgroundColor: const Color.fromRGBO(86, 170, 200, 1),
         elevation: 4.0,
       ),
