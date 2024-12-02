@@ -232,11 +232,15 @@ class _HomePageState extends State<HomePage> {
                                           strokeWidth: 12,
                                           backgroundColor:
                                               const Color.fromRGBO(0, 0, 0, 0.05),
-                                          color: tripScore > 80
-                                              ? Colors.green
-                                              : tripScore > 50
-                                                  ? Colors.orange
-                                                  : Colors.red,
+                                          color: tripScore > 90
+                                              ? const Color.fromRGBO(86, 170, 200, 1)
+                                              : tripScore > 80
+                                                ? const Color.fromRGBO(170, 200, 86, 1)
+                                                : tripScore > 70
+                                                  ? const Color.fromRGBO(244, 159, 10, 1)
+                                                  : tripScore > 60
+                                                    ? const Color.fromRGBO(233, 79, 59, 1)
+                                                    : Colors.red,
                                         ),
                                       ),
                                       Text(
@@ -244,11 +248,15 @@ class _HomePageState extends State<HomePage> {
                                         style: TextStyle(
                                           fontSize: 24,
                                           fontWeight: FontWeight.bold,
-                                          color: tripScore > 80
-                                              ? Colors.green
-                                              : tripScore > 50
-                                                  ? Colors.orange
-                                                  : Colors.red,
+                                          color: tripScore > 90
+                                              ? const Color.fromRGBO(86, 170, 200, 1)
+                                              : tripScore > 80
+                                                ? const Color.fromRGBO(170, 200, 86, 1)
+                                                : tripScore > 70
+                                                  ? const Color.fromRGBO(244, 159, 10, 1)
+                                                  : tripScore > 60
+                                                    ? const Color.fromRGBO(233, 79, 59, 1)
+                                                    : Colors.red,
                                         ),
                                       ),
                                     ],
