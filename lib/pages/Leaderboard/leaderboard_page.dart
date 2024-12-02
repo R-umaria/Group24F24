@@ -147,7 +147,7 @@ class LeaderboardItem extends StatelessWidget {
                   Text(
                     '$score%',
                     style:TextStyle(
-                      fontSize: 20.0,
+                      fontSize: 19,
                       fontWeight: FontWeight.bold,
                        color: _getScoreColour(score),
                     ),
