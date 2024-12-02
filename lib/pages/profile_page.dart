@@ -32,7 +32,7 @@ class ProfilePage extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: Color.fromRGBO(49, 49, 49, 1),
                 ),
               ),
             ),
@@ -41,7 +41,7 @@ class ProfilePage extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
                 color: const Color.fromRGBO(86, 170, 200, 1),
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(15),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.2),
@@ -91,7 +91,7 @@ class ProfilePage extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 219, 225, 231),
+                color: const Color.fromRGBO(225, 225, 225, 1),
                 borderRadius: BorderRadius.circular(10),
                 boxShadow: [
                   BoxShadow(
@@ -110,7 +110,10 @@ class ProfilePage extends StatelessWidget {
                       },
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 50),
-                        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+                        backgroundColor: const Color.fromRGBO(49, 49, 49, 1),
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                       ),
                       child: const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween, //to seperate text from the icon on the right
@@ -118,18 +121,19 @@ class ProfilePage extends StatelessWidget {
                           Text(
                             'Check Monthly Reports',
                             style: TextStyle(
-                              color: Colors.white, 
-                              fontSize: 18, 
+                              color: Color.fromRGBO(255, 255, 255, 1), 
+                              fontSize: 18,
+                              fontWeight: FontWeight.normal,
                             ),
                           ),
                           Icon(
-                            Icons.auto_graph,
-                            color: Colors.white, 
+                            Icons.assessment_rounded,
+                            color: Color.fromRGBO(255, 255, 255, 1), 
                           ),
                         ],
                       ),
                     ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 13),
 
                  //parental settings button 
                   ElevatedButton(
@@ -142,7 +146,10 @@ class ProfilePage extends StatelessWidget {
                       },
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 50),
-                        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+                        backgroundColor: const Color.fromRGBO(49, 49, 49, 1),
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                       ),
                       child: const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween, //to seperate text from the icon on the right
@@ -150,18 +157,19 @@ class ProfilePage extends StatelessWidget {
                           Text(
                             'Parental Settings',
                             style: TextStyle(
-                              color: Colors.white, 
-                              fontSize: 18, 
+                              color: Color.fromRGBO(255, 255, 255, 1), 
+                              fontSize: 18,
+                              fontWeight: FontWeight.normal,
                             ),
                           ),
                           Icon(
                             Icons.people,
-                            color: Colors.white, 
+                            color: Color.fromRGBO(255, 255, 255, 1), 
                           ),
                         ],
                       ),
                     ),
-                    const SizedBox(height: 16), //adds spacer between the buttons so they arent squished
+                    const SizedBox(height: 13), //adds spacer between the buttons so they arent squished
                   
                   //setttings
                   ElevatedButton(
@@ -170,7 +178,10 @@ class ProfilePage extends StatelessWidget {
                       },
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 50),
-                        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+                        backgroundColor: const Color.fromRGBO(49, 49, 49, 1),
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                       ),
                       child: const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween, //to seperate text from the icon on the right
@@ -178,13 +189,14 @@ class ProfilePage extends StatelessWidget {
                           Text(
                             'Account Settings',
                             style: TextStyle(
-                              color: Colors.white, 
-                              fontSize: 18, 
+                              color: Color.fromRGBO(255, 255, 255, 1),  
+                              fontSize: 18,
+                              fontWeight: FontWeight.normal,
                             ),
                           ),
                           Icon(
                             Icons.settings,
-                            color: Colors.white, 
+                            color: Color.fromRGBO(255, 255, 255, 1),  
                           ),
                         ],
                       ),
