@@ -287,6 +287,36 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: _toggleTrip, // Manual trip toggle
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: isTripActive
+                          ? Colors.red // Red for "Stop Trip"
+                          : const Color.fromRGBO(86, 170, 200, 1), // Blue for "Start Trip"
+                      minimumSize: Size(double.infinity, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          isTripActive ? 'Stop Trip' : 'Start Trip',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                          ),
+                        ),
+                        SizedBox(width: 8),
+                        Icon(
+                          Icons.directions_car,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
