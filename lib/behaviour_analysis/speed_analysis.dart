@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'behaviour_database/database.dart';
 
 //state based on the comparison between the current speed and the limit (based on our chosen thresholds)
 //currently set for city driving but adjusted thresholds will be added for highway driving later
@@ -25,6 +26,7 @@ class SpeedAnalysis {
     required this.speedLimit,
   });
 }
+
 
 //analyze current speed vs speed limit
 SpeedAnalysis analyzeSpeed(double currentSpeed, int speedLimit, SpeedAnalysisTimer timer) {
@@ -129,6 +131,11 @@ class SpeedAnalysisTimer {
     debugPrint('warning state percent: ${warningPercentage.toStringAsFixed(2)}%');
     debugPrint('dangerous state percent: ${dangerousPercentage.toStringAsFixed(2)}%');
     debugPrint('safe state percent: ${safePercentage.toStringAsFixed(2)}%');
+
+    //insert into database
+    final behaviourDatabase = BehaviourAnalysisDatabase();
+    var tripinfo = behaviourAnalysisInfo(id: 0,warningSpeedPercent: warningPercentage, dangerSpeedPercent: dangerousPercentage, safeSpeedPercent: safePercentage);
+    behaviourDatabase.insertBehaviourAnalysisInfo(tripinfo);
   }
 
 //for the danger popup for speed:
@@ -141,6 +148,35 @@ class SpeedStateNotifier extends ChangeNotifier {
       _state = newState;
       notifyListeners();
     }
+  }
+}
+
+//this is to go into the database
+class behaviourAnalysisInfo {
+  final int id;
+  final double warningSpeedPercent;
+  final double dangerSpeedPercent;
+  final double safeSpeedPercent;
+
+  behaviourAnalysisInfo({
+    required this.id,
+    required this.warningSpeedPercent,
+    required this.dangerSpeedPercent,
+    required this.safeSpeedPercent,
+  });
+    //converting behaviour analysis info into a Map. The keys must correspond to the names of the
+  // columns in the database.
+  Map<String, Object?> toMap() {
+    return {
+      'id': id,
+      'warningSpeedPercent': warningSpeedPercent,
+      'dangerSpeedPercent': dangerSpeedPercent,
+      'safeSpeedPercent': safeSpeedPercent,
+    };
+  }
+    @override
+  String toString() {
+    return 'Trip{id: $id, warningSpeedPercent: $warningSpeedPercent, dangerSpeedPercent: $dangerSpeedPercent, safeSpeedPercent: $safeSpeedPercent}';
   }
 }
 
@@ -172,6 +208,7 @@ class SpeedTrackingSimulation {
       }
     }
     //after simulation print the report to console
+
     speedAnalysisReport(timer);
   }
 
