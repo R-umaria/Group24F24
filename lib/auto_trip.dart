@@ -97,7 +97,7 @@ class AutoTripManager {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text("Auto trip started!"),
-        duration: Duration(seconds: 2),
+        duration: Duration(seconds: 1),
       ),
     );
   }
@@ -115,7 +115,7 @@ class AutoTripManager {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text("Auto trip stopped!"),
-        duration: Duration(seconds: 2),
+        duration: Duration(seconds: 1),
       ),
     );
   }

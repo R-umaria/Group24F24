@@ -14,8 +14,8 @@ class SensorData {
   StreamSubscription<GyroscopeEvent>? _gyroscopeSubscription;
 
   // Thresholds for detecting events
-  final double accelerationThreshold = 15; // Sudden braking/acceleration threshold (m/s^2)
-  final double gyroscopeThreshold = 4.0;    // Sharp turn threshold (rad/s)
+  final double accelerationThreshold = 30; // Adjusted threshold for significant acceleration/braking (m/s^2)
+  final double gyroscopeThreshold = 4.0;  // Adjusted threshold for sharp turns (rad/s)
 
   // Event callback functions
   void Function(String event)? onEventDetected;
@@ -25,6 +25,9 @@ class SensorData {
 
   // Speed manager instance
   final VehicleSpeedManager _speedManager = VehicleSpeedManager();
+
+  // To prevent duplicate logging within the same second
+  String? _lastLoggedTimestamp;
 
   // Start listening to sensor data
   void startSensors() {
@@ -69,10 +72,19 @@ class SensorData {
 
   // Log detected events into the SQLite database
   Future<void> _logEvent(String eventType) async {
+    final String timestamp = DateTime.now().toIso8601String().split('.').first;
+
+    // Ignore duplicate events occurring within the same second
+    if (_lastLoggedTimestamp == timestamp) {
+      print("Duplicate event ignored at $timestamp");
+      return;
+    }
+
+    _lastLoggedTimestamp = timestamp;
+
     final double currentLat = currentLatitude ?? 0.0; // Get current latitude
     final double currentLng = currentLongitude ?? 0.0; // Get current longitude
     final double currentSpeed = await _speedManager.getCurrentSpeed(); // Get current speed
-    final String timestamp = DateTime.now().toIso8601String(); // Current timestamp
 
     await _dbHelper.insertEvent({
       'event_type': eventType,
