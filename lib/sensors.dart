@@ -15,7 +15,7 @@ class SensorData {
 
   // Thresholds for detecting events
   final double accelerationThreshold = 30; // Adjusted threshold for significant acceleration/braking (m/s^2)
-  final double gyroscopeThreshold = 4.0;  // Adjusted threshold for sharp turns (rad/s)
+  final double gyroscopeThreshold = 3.0;  // Adjusted threshold for sharp turns (rad/s)
 
   // Event callback functions
   void Function(String event)? onEventDetected;
