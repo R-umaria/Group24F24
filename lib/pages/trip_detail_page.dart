@@ -10,6 +10,9 @@ class TripDetailsPage extends StatelessWidget {
   final double averageSpeed;
   final double topSpeed;
   final double distanceTravel;
+  final double safeSpeedPercent;
+  final double dangerousSpeedPercent;
+  final double warningSpeedPercent;
 
   const TripDetailsPage({
     Key? key,
@@ -22,6 +25,9 @@ class TripDetailsPage extends StatelessWidget {
     required this.averageSpeed,
     required this.topSpeed,
     required this.distanceTravel,
+    required this.safeSpeedPercent,
+    required this.dangerousSpeedPercent,
+    required this.warningSpeedPercent,
   }) : super(key: key);
 
   @override
@@ -46,6 +52,9 @@ class TripDetailsPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
+              _buildTextRow('Percent of trip at a safe speed:', '${safeSpeedPercent.toStringAsFixed(2)} km/h'),
+              _buildTextRow('Percent of trip at a warning level speed:', '${warningSpeedPercent.toStringAsFixed(2)} km/h'),
+              _buildTextRow('Percent of trip at a dangerous speed:', '${dangerousSpeedPercent.toStringAsFixed(2)} km/h'),
               _buildTextRow('Average Speed:', '${averageSpeed.toStringAsFixed(2)} km/h'),
               _buildTextRow('Top Speed:', '${topSpeed.toStringAsFixed(2)} km/h'),
               _buildTextRow('Distance Travelled:', '${distanceTravel.toStringAsFixed(2)} km'),

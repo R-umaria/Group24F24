@@ -5,7 +5,9 @@ import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:drive_wise/gps.dart'; 
 import 'package:drive_wise/sensors.dart'; 
 import 'package:drive_wise/auto_trip.dart'; 
-import 'trip_detail_page.dart'; 
+import 'trip_detail_page.dart';
+import '../behaviour_analysis/behaviour_database/database.dart';
+import '../behaviour_analysis/speed_analysis.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,6 +17,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  //connecting to the database
+  final behaviourDatabase = BehaviourAnalysisDatabase();
+  late Future<behaviourAnalysisInfo?> info;
+
   bool isTripActive = false;
   final SensorData _sensorData = SensorData();
   final AutoTripManager _autoTripManager = AutoTripManager();
@@ -37,6 +43,9 @@ class _HomePageState extends State<HomePage> {
       debugPrint(event);
     };
     _autoTripManager.isTripActive = isTripActive;
+
+    //get behaviour analysis info
+    info = behaviourDatabase.getBehaviourAnalysisInfoById(0); // Can be null, so we allow nullable type
   }
 
   @override
@@ -158,147 +167,174 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                   const SizedBox(height: 10),
-                  Card(
-                    color: const Color.fromRGBO(225, 225, 225, 1),
-                    elevation: 3,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        children: [
-                          const Text(
-                            'Last Trip',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: const Color.fromRGBO(112, 112, 112, 1),
+                  const SizedBox(height: 10),
+                  //data from database
+                  FutureBuilder<behaviourAnalysisInfo?>(
+                    future: info,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator(); // While waiting
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else if (snapshot.hasData) {
+                        behaviourAnalysisInfo? behaviourInfo = snapshot.data;
+
+                        if (behaviourInfo != null) {
+                          double safeSpeed = behaviourInfo.safeSpeedPercent;
+                          double warningSpeed = behaviourInfo.warningSpeedPercent;
+                          double dangerousSpeed = behaviourInfo.dangerSpeedPercent;
+
+                          return Card(
+                            color: const Color.fromRGBO(225, 225, 225, 1),
+                            elevation: 3,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                          ),
-                          const SizedBox(height: 10),
-                          Container(
-                            height: 150,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              color: const Color.fromRGBO(163, 163, 163, 0.5),
-                            ),
-                            child: const Center(
-                              child: Text(
-                                'Map Placeholder',
-                                style: TextStyle(color: Colors.black45),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  _buildDetailRow(
-                                    'Date:',
-                                    '24/10/2024',
-                                    const Color.fromRGBO(112, 112, 112, 1),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  _buildDetailRow(
-                                    'Distance Traveled:',
-                                    '${distanceTravel} Kms',
-                                    const Color.fromRGBO(112, 112, 112, 1),
-                                  ),
-                                ],
-                              ),
-                              Column(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Column(
                                 children: [
                                   const Text(
-                                    'Score',
+                                    'Last Trip',
                                     style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
                                       color: const Color.fromRGBO(112, 112, 112, 1),
                                     ),
                                   ),
-                                  const SizedBox(height: 8),
-                                  Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      SizedBox(
-                                        width: 80,
-                                        height: 80,
-                                        child: CircularProgressIndicator(
-                                          value: tripScore / 100,
-                                          strokeWidth: 12,
-                                          backgroundColor:
-                                              const Color.fromRGBO(0, 0, 0, 0.05),
-                                          color: tripScore > 90
-                                              ? const Color.fromRGBO(86, 170, 200, 1)
-                                              : tripScore > 80
-                                                ? const Color.fromRGBO(170, 200, 86, 1)
-                                                : tripScore > 70
-                                                  ? const Color.fromRGBO(244, 159, 10, 1)
-                                                  : tripScore > 60
-                                                    ? const Color.fromRGBO(233, 79, 59, 1)
-                                                    : Colors.red,
-                                        ),
+                                  const SizedBox(height: 10),
+                                  Container(
+                                    height: 150,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      color: const Color.fromRGBO(163, 163, 163, 0.5),
+                                    ),
+                                    child: const Center(
+                                      child: Text(
+                                        'Map Placeholder',
+                                        style: TextStyle(color: Colors.black45),
                                       ),
-                                      Text(
-                                        '$tripScore',
-                                        style: TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.bold,
-                                          color: tripScore > 90
-                                              ? const Color.fromRGBO(86, 170, 200, 1)
-                                              : tripScore > 80
-                                                ? const Color.fromRGBO(170, 200, 86, 1)
-                                                : tripScore > 70
-                                                  ? const Color.fromRGBO(244, 159, 10, 1)
-                                                  : tripScore > 60
-                                                    ? const Color.fromRGBO(233, 79, 59, 1)
-                                                    : Colors.red,
-                                        ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          _buildDetailRow(
+                                            'Date:',
+                                            '24/10/2024',
+                                            const Color.fromRGBO(112, 112, 112, 1),
+                                          ),
+                                          const SizedBox(height: 8),
+                                          _buildDetailRow(
+                                            'Distance Traveled:',
+                                            '${distanceTravel} Kms',
+                                            const Color.fromRGBO(112, 112, 112, 1),
+                                          ),
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          const Text(
+                                            'Score',
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              color: const Color.fromRGBO(112, 112, 112, 1),
+                                            ),
+                                          ),
+                                          const SizedBox(height: 8),
+                                          Stack(
+                                            alignment: Alignment.center,
+                                            children: [
+                                              SizedBox(
+                                                width: 80,
+                                                height: 80,
+                                                child: CircularProgressIndicator(
+                                                  value: tripScore / 100,
+                                                  strokeWidth: 12,
+                                                  backgroundColor:
+                                                      const Color.fromRGBO(0, 0, 0, 0.05),
+                                                  color: tripScore > 90
+                                                      ? const Color.fromRGBO(86, 170, 200, 1)
+                                                      : tripScore > 80
+                                                          ? const Color.fromRGBO(170, 200, 86, 1)
+                                                          : tripScore > 70
+                                                              ? const Color.fromRGBO(244, 159, 10, 1)
+                                                              : tripScore > 60
+                                                                  ? const Color.fromRGBO(233, 79, 59, 1)
+                                                                  : Colors.red,
+                                                ),
+                                              ),
+                                              Text(
+                                                '$tripScore',
+                                                style: TextStyle(
+                                                  fontSize: 24,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: tripScore > 90
+                                                      ? const Color.fromRGBO(86, 170, 200, 1)
+                                                      : tripScore > 80
+                                                          ? const Color.fromRGBO(170, 200, 86, 1)
+                                                          : tripScore > 70
+                                                              ? const Color.fromRGBO(244, 159, 10, 1)
+                                                              : tripScore > 60
+                                                                  ? const Color.fromRGBO(233, 79, 59, 1)
+                                                                  : Colors.red,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
+                                  const SizedBox(height: 16),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => TripDetailsPage(
+                                            safeSpeedPercent: safeSpeed,
+                                            warningSpeedPercent: warningSpeed,
+                                            dangerousSpeedPercent: dangerousSpeed,
+                                            overspeedingInstances: overspeedingInstances,
+                                            harshBrakingInstances: harshBrakingInstances,
+                                            sharpTurnInstances: sharpTurnInstances,
+                                            tripDurationHours: tripDurationHours,
+                                            isShortTrip: isShortTrip,
+                                            isLongTripWithoutBreaks: isLongTripWithoutBreaks,
+                                            averageSpeed: averageSpeed,
+                                            topSpeed: topSpeed,
+                                            distanceTravel: distanceTravel,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: const Text(
+                                      'More Details',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color.fromRGBO(49, 49, 49, 1),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                  ),
                                 ],
                               ),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => TripDetailsPage(
-                                    overspeedingInstances: overspeedingInstances,
-                                    harshBrakingInstances: harshBrakingInstances,
-                                    sharpTurnInstances: sharpTurnInstances,
-                                    tripDurationHours: tripDurationHours,
-                                    isShortTrip: isShortTrip,
-                                    isLongTripWithoutBreaks: isLongTripWithoutBreaks,
-                                    averageSpeed: averageSpeed,
-                                    topSpeed: topSpeed,
-                                    distanceTravel: distanceTravel,
-                                  ),
-                                ),
-                              );
-                            },
-                            child: const Text(
-                              'More Details',
-                              style: TextStyle(color: Colors.white),
                             ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color.fromRGBO(49, 49, 49, 1),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                          );
+                        } else {
+                          return Text('100%');
+                        }
+                      } else {
+                        return const Text('0%');
+                      }
+                    },
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
