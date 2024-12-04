@@ -2,11 +2,11 @@
 
 import 'package:drive_wise/pages/home_page.dart';
 import 'package:drive_wise/pages/Leaderboard/leaderboard_page.dart';
-import 'package:drive_wise/pages/my_trips.dart';
 import 'package:drive_wise/pages/profile_page.dart';
 import './Awards/awards_page.dart';
 import './Awards/award_backend.dart';
 import 'package:flutter/material.dart';
+import './prev_trips/previous_trips_page.dart';
 
 class FirstPage extends StatefulWidget {
   const FirstPage({super.key});
@@ -39,7 +39,7 @@ class _FirstPageState extends State<FirstPage> {
       HomePage(),
       
       // My Trips
-      MyTrips(),
+      PrevTripsPage(),
 
       // LeaderBoardpage
       LeaderboardPage(),
