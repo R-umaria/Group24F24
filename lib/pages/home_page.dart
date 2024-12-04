@@ -20,14 +20,14 @@ class _HomePageState extends State<HomePage> {
   final AutoTripManager _autoTripManager = AutoTripManager();
 
   int overspeedingInstances = 1;
-  int harshBrakingInstances = 2;
-  int sharpTurnInstances = 3;
-  bool isShortTrip = false;
-  bool isLongTripWithoutBreaks = true;
-  double averageSpeed = 50;
-  double topSpeed = 103;
-  double distanceTravel = 78;
-  double tripDurationHours = 1.6;
+  int harshBrakingInstances = 0;
+  int sharpTurnInstances = 0;
+  bool isShortTrip = true;
+  bool isLongTripWithoutBreaks = false;
+  double averageSpeed = 2;
+  double topSpeed = 5;
+  double distanceTravel = 0.1;
+  double tripDurationHours = 0.1;
 
   @override
   void initState() {
@@ -174,20 +174,19 @@ class _HomePageState extends State<HomePage> {
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: const Color.fromRGBO(112, 112, 112, 1),
+                              color: Color.fromRGBO(112, 112, 112, 1),
                             ),
                           ),
                           const SizedBox(height: 10),
                           Container(
-                            height: 150,
+                            height: 140,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
-                              color: const Color.fromRGBO(163, 163, 163, 0.5),
                             ),
-                            child: const Center(
-                              child: Text(
-                                'Map Placeholder',
-                                style: TextStyle(color: Colors.black45),
+                            child: Center(
+                              child: Image.asset(
+                                'assets/img/map.png',
+                                fit: BoxFit.fill,
                               ),
                             ),
                           ),
@@ -200,13 +199,13 @@ class _HomePageState extends State<HomePage> {
                                 children: [
                                   _buildDetailRow(
                                     'Date:',
-                                    '24/10/2024',
+                                    '05/12/2024', 
                                     const Color.fromRGBO(112, 112, 112, 1),
                                   ),
                                   const SizedBox(height: 8),
                                   _buildDetailRow(
                                     'Distance Traveled:',
-                                    '${distanceTravel} Kms',
+                                    '$distanceTravel Kms',
                                     const Color.fromRGBO(112, 112, 112, 1),
                                   ),
                                 ],
@@ -217,7 +216,7 @@ class _HomePageState extends State<HomePage> {
                                     'Score',
                                     style: TextStyle(
                                       fontSize: 16,
-                                      color: const Color.fromRGBO(112, 112, 112, 1),
+                                      color: Color.fromRGBO(112, 112, 112, 1),
                                     ),
                                   ),
                                   const SizedBox(height: 8),
