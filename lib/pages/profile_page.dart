@@ -1,6 +1,7 @@
 //Andy Guest - Dec 2 2024
 //frontend for the profile page
 
+import 'package:drive_wise/pages/monthly_reports.dart';
 import 'package:flutter/material.dart';
 import './parental_settings.dart';
 
@@ -106,7 +107,11 @@ class ProfilePage extends StatelessWidget {
                   //monthly reports
                     ElevatedButton(
                       onPressed: () {
-                        //monthly reports page link goes here!!!!!!!!!!!
+                        //add link to parental settings here!!!
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => MonthlyReportPage()),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         minimumSize: const Size(double.infinity, 50),
