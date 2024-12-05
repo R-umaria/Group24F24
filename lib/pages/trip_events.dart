@@ -18,6 +18,19 @@ class _MyTripsState extends State<MyTrips> {
     _loadTrips();
   }
 
+//moving this to one file instead of having it in both auto and manual start
+    void _logEvent(String eventType, double lat, double lng, double speed) async {
+      final timestamp = DateTime.now().toIso8601String();
+      await _dbHelper.insertEvent({
+        'event_type': eventType,
+        'timestamp': timestamp,
+        'latitude': lat,
+        'longitude': lng,
+        'speed': speed,
+      });
+      print("Logged $eventType: $timestamp, Lat: $lat, Lng: $lng, Speed: $speed");
+  }
+
   // Load all trips from the database
   Future<void> _loadTrips() async {
     final trips = await _dbHelper.getAllTrips();

@@ -64,7 +64,7 @@ class SensorData {
         sqrt(event.x * event.x + event.y * event.y + event.z * event.z);
 
     if (totalAcceleration > accelerationThreshold) {
-      _logEvent("Sudden Acceleration/Braking Detected");
+      logEvent("Sudden Acceleration/Braking Detected");
       onEventDetected?.call("Sudden Acceleration/Braking Detected");
     }
   }
@@ -75,13 +75,13 @@ class SensorData {
         sqrt(event.x * event.x + event.y * event.y + event.z * event.z);
 
     if (angularVelocity > gyroscopeThreshold) {
-      _logEvent("Sharp Turn Detected");
+      logEvent("Sharp Turn Detected");
       onEventDetected?.call("Sharp Turn Detected");
     }
   }
 
   // Log detected events into the SQLite database
-  Future<void> _logEvent(String eventType) async {
+  Future<void> logEvent(String eventType) async {
     final String timestamp = DateTime.now().toIso8601String().split('.').first;
 
     // Ignore duplicate events occurring within the same second
