@@ -26,6 +26,11 @@ class SensorData {
   // Speed manager instance
   final VehicleSpeedManager _speedManager = VehicleSpeedManager();
 
+  //sped tracking
+  final VehicleSpeedManager _vehicleSpeedManager = VehicleSpeedManager();
+
+
+
   // To prevent duplicate logging within the same second
   String? _lastLoggedTimestamp;
 
@@ -38,7 +43,11 @@ class SensorData {
     _gyroscopeSubscription = gyroscopeEvents.listen((event) {
       _analyzeGyroscopeData(event);
     });
+    
+    _vehicleSpeedManager.startSpeedTracking(); //added speed tracking here
+
   }
+
 
   // Stop listening to sensor data
   void stopSensors() {
@@ -46,6 +55,7 @@ class SensorData {
     _gyroscopeSubscription?.cancel();
     _accelerometerSubscription = null;
     _gyroscopeSubscription = null;
+    _vehicleSpeedManager.stopSpeedTracking();  //added for speed tracking
   }
 
   // Analyze accelerometer data to detect sudden braking/acceleration

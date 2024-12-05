@@ -131,7 +131,7 @@ class SpeedAnalysisTimer {
     debugPrint('warning state percent: ${warningPercentage.toStringAsFixed(2)}%');
     debugPrint('dangerous state percent: ${dangerousPercentage.toStringAsFixed(2)}%');
     debugPrint('safe state percent: ${safePercentage.toStringAsFixed(2)}%');
-
+    _logBehaviourReport(safePercentage, warningPercentage, dangerousPercentage);
   }
 
  final DatabaseHelper _dbHelper = DatabaseHelper();
