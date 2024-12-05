@@ -18,6 +18,11 @@ class SensorData {
   final double accelerationThreshold = 13; // Threshold for significant acceleration/braking (m/s^2)
   final double gyroscopeThreshold = 3.0;  // Threshold for sharp turns (rad/s)
 
+  // Event counters
+  int suddenAccelerationCount = 0;
+  int suddenBrakingCount = 0;
+  int sharpTurnCount = 0;
+
   // Event callback functions
   void Function(String event)? onEventDetected;
 
@@ -46,7 +51,7 @@ class SensorData {
     _gyroscopeSubscription = gyroscopeEvents.listen((event) {
       _analyzeGyroscopeData(event);
     });
-    
+
     _vehicleSpeedManager.startSpeedTracking(); //added speed tracking here
 
   }
@@ -74,8 +79,17 @@ class SensorData {
     // final double smoothedAcceleration = rawTotalAcceleration;
 
     if (smoothedAcceleration > accelerationThreshold) {
-      _logEvent("Sudden Acceleration/Braking Detected");
-      onEventDetected?.call("Sudden Acceleration/Braking Detected");
+      if (event.z > 0) {
+        // Sudden acceleration
+        suddenAccelerationCount++;
+        _logEvent("Sudden Acceleration Detected");
+        onEventDetected?.call("Sudden Acceleration Detected");
+      } else {
+        // Sudden braking
+        suddenBrakingCount++;
+        _logEvent("Sudden Braking Detected");
+        onEventDetected?.call("Sudden Braking Detected");
+      }
     }
   }
 
@@ -93,6 +107,7 @@ class SensorData {
     // final double smoothedAngularVelocity = rawAngularVelocity;
 
     if (smoothedAngularVelocity > gyroscopeThreshold) {
+      sharpTurnCount++;
       _logEvent("Sharp Turn Detected");
       onEventDetected?.call("Sharp Turn Detected");
     }
@@ -124,5 +139,17 @@ class SensorData {
     });
 
     print("Event logged: $eventType at $timestamp, Lat: $currentLat, Lng: $currentLng, Speed: $currentSpeed");
+  }
+
+  // Public wrapper for logging events
+  Future<void> logEvent(String eventType) async {
+    await _logEvent(eventType); // Call the private method
+  }
+
+  // Optional: Reset event counters
+  void resetEventCounters() {
+    suddenAccelerationCount = 0;
+    suddenBrakingCount = 0;
+    sharpTurnCount = 0;
   }
 }

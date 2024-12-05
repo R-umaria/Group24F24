@@ -1,11 +1,11 @@
 // ignore_for_file: sort_child_properties_last, prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_clippers/flutter_custom_clippers.dart'; 
-import 'package:drive_wise/gps.dart'; 
-import 'package:drive_wise/sensors.dart'; 
-import 'package:drive_wise/auto_trip.dart'; 
-import 'trip_detail_page.dart'; 
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:drive_wise/gps.dart';
+import 'package:drive_wise/sensors.dart';
+import 'package:drive_wise/auto_trip.dart';
+import 'trip_detail_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,15 +19,15 @@ class _HomePageState extends State<HomePage> {
   final SensorData _sensorData = SensorData();
   final AutoTripManager _autoTripManager = AutoTripManager();
 
-  int overspeedingInstances = 1;
+  int overspeedingInstances = 0;
   int harshBrakingInstances = 0;
   int sharpTurnInstances = 0;
   bool isShortTrip = true;
   bool isLongTripWithoutBreaks = false;
-  double averageSpeed = 2;
-  double topSpeed = 5;
-  double distanceTravel = 0.1;
-  double tripDurationHours = 0.1;
+  double averageSpeed = 0;
+  double topSpeed = 0;
+  double distanceTravel = 0;
+  double tripDurationHours = 0;
 
   @override
   void initState() {
@@ -35,6 +35,7 @@ class _HomePageState extends State<HomePage> {
     // _autoTripManager.startMonitoring(context);   // UnComment to enable AutoTrip
     _sensorData.onEventDetected = (event) {
       debugPrint(event);
+      _updateEventCounters();
     };
     _autoTripManager.isTripActive = isTripActive;
   }
@@ -48,8 +49,10 @@ class _HomePageState extends State<HomePage> {
 
   void _toggleTrip() async {
     if (isTripActive) {
+      // Stop trip
       stopGpsTracking();
       _sensorData.stopSensors();
+      _sensorData.logEvent("Trip Stopped"); // Log trip stop event
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Trip stopped!"),
@@ -57,8 +60,11 @@ class _HomePageState extends State<HomePage> {
         ),
       );
     } else {
+      // Start trip
       await gpsTracking();
+      _sensorData.resetEventCounters(); // Reset counters at trip start
       _sensorData.startSensors();
+      _sensorData.logEvent("Trip Started"); // Log trip start event
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Trip started!"),
@@ -70,6 +76,15 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       isTripActive = !isTripActive;
       _autoTripManager.isTripActive = isTripActive;
+    });
+  }
+
+  // Updates local counters based on sensor data
+  void _updateEventCounters() {
+    setState(() {
+      harshBrakingInstances = _sensorData.suddenBrakingCount;
+      sharpTurnInstances = _sensorData.sharpTurnCount;
+      // You can also include overspeedingInstances if logic is available for that
     });
   }
 
@@ -95,6 +110,7 @@ class _HomePageState extends State<HomePage> {
 
     return score.clamp(0, 100);
   }
+
 
   @override
   Widget build(BuildContext context) {
