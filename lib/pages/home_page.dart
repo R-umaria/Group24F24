@@ -6,6 +6,7 @@ import 'package:drive_wise/gps.dart';
 import 'package:drive_wise/sensors.dart'; 
 import 'package:drive_wise/auto_trip.dart'; 
 import 'trip_detail_page.dart'; 
+import "../behaviour_analysis/behaviour_database/database.dart";
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -29,6 +30,12 @@ class _HomePageState extends State<HomePage> {
   double distanceTravel = 78;
   double tripDurationHours = 1.6;
 
+  int warningSpeedPercent = 0;
+  int dangerSpeedPercent = 0;
+  int safeSpeedPercent = 0;
+  final db = BehaviourAnalysisDatabase().database;
+
+
   @override
   void initState() {
     super.initState();
@@ -37,7 +44,37 @@ class _HomePageState extends State<HomePage> {
       debugPrint(event);
     };
     _autoTripManager.isTripActive = isTripActive;
+    _initializeBehaviourAnalysisInfo();
   }
+
+  Future<void> _initializeBehaviourAnalysisInfo() async {
+  final behaviourInfo = await getBehaviourAnalysisInfoById(1); // Replace with the appropriate ID
+  if (behaviourInfo != null) {
+    setState(() {
+      warningSpeedPercent = (behaviourInfo['warningSpeedPercent'] as double).toInt();
+      dangerSpeedPercent = (behaviourInfo['dangerSpeedPercent'] as double).toInt();
+      safeSpeedPercent = (behaviourInfo['safeSpeedPercent'] as double).toInt();
+    });
+  }
+}
+
+
+  Future<Map<String, dynamic>?> getBehaviourAnalysisInfoById(int id) async {
+  final db = await BehaviourAnalysisDatabase().database;
+  final List<Map<String, Object?>> maps = await db.query(
+    'behaviourAnalysis',
+    where: 'id = ?',
+    whereArgs: [id],
+  );
+
+  if (maps.isEmpty) {
+    return null;
+  }
+
+  return maps.first;
+}
+
+  
 
   @override
   void dispose() {
@@ -266,6 +303,7 @@ class _HomePageState extends State<HomePage> {
                             ],
                           ),
                           const SizedBox(height: 16),
+                          //From here the value is passed on to the trip details page
                           ElevatedButton(
                             onPressed: () {
                               Navigator.push(
@@ -281,6 +319,9 @@ class _HomePageState extends State<HomePage> {
                                     averageSpeed: averageSpeed,
                                     topSpeed: topSpeed,
                                     distanceTravel: distanceTravel,
+                                    warningSpeedPercent: warningSpeedPercent,
+                                    dangerSpeedPercent: dangerSpeedPercent,
+                                    safeSpeedPercent: safeSpeedPercent
                                   ),
                                 ),
                               );

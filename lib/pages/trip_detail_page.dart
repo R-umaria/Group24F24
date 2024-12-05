@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 class TripDetailsPage extends StatelessWidget {
   final int overspeedingInstances;
   final int harshBrakingInstances;
@@ -10,6 +11,9 @@ class TripDetailsPage extends StatelessWidget {
   final double averageSpeed;
   final double topSpeed;
   final double distanceTravel;
+  final int warningSpeedPercent;
+  final int dangerSpeedPercent;
+  final int safeSpeedPercent;
 
   const TripDetailsPage({
     Key? key,
@@ -22,7 +26,12 @@ class TripDetailsPage extends StatelessWidget {
     required this.averageSpeed,
     required this.topSpeed,
     required this.distanceTravel,
+    required this.warningSpeedPercent,
+    required this.dangerSpeedPercent,
+    required this.safeSpeedPercent
   }) : super(key: key);
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +62,9 @@ class TripDetailsPage extends StatelessWidget {
               _buildTextRow('Harsh Braking Instances:', '$harshBrakingInstances'),
               _buildTextRow('Sharp Turns:', '$sharpTurnInstances'),
               _buildTextRow('Trip Duration:', '${tripDurationHours.toStringAsFixed(1)} hours'),
+              _buildTextRow('Warning Speed Percent:', '${warningSpeedPercent.toStringAsFixed(1)} hours'),
+              _buildTextRow('Danger Speed Percent:', '${dangerSpeedPercent.toStringAsFixed(1)} hours'),
+              _buildTextRow('Safe Speed Percent:', '${safeSpeedPercent.toStringAsFixed(1)} hours')
             
             ],
           ),
