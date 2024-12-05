@@ -33,7 +33,7 @@ class DatabaseHelper {
   // Create the database and the tables
   Future<Database> _initDatabase() async {
     final dbPath = await getDatabasesPath();
-    final path = join(dbPath, 'trips.db');
+    final path = join(dbPath, 'drivewise.db');
     return await openDatabase(path, version: 1, onCreate: _createDatabase);
   }
 
@@ -57,6 +57,54 @@ class DatabaseHelper {
         $_columnSettingValue TEXT
       )
     ''');
+
+    //behaviour table
+    await db.execute(''' 
+      CREATE TABLE behaviour_analysis (
+        trip_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        warning_speed_percent DOUBLE,
+        danger_speed_percent DOUBLE, 
+        safe_speed_percent DOUBLE
+      )
+    ''');
+    //the users table
+    await db.execute(''' 
+      CREATE TABLE users (
+        user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username VARCHAR NOT NULL,
+        email VARCHAR UNIQUE NOT NULL, 
+        password VARCHAR NOT NULL
+      )
+    ''');
+    //awards table
+    await db.execute(''' 
+      CREATE TABLE awards (
+        award_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INT,
+        dateAwarded DATETIME
+      )
+    ''');
+    //trip table
+    await db.execute(''' 
+      CREATE TABLE trip (
+        trip_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INT,
+        starttime DATETIME,
+        endtime DATETIME,
+        distance DOUBLE,
+        tripScore DOUBLE
+      )
+    ''');
+  }
+
+  //insert behaviour analysis into the database
+  Future<void> insertBehaviour(Map<String, dynamic> behaviourData) async {
+    final db = await database;
+    await db.insert(
+      'behaviour_analysis',
+      behaviourData,
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
   }
 
   // Insert trip data into the database

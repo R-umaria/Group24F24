@@ -9,8 +9,8 @@ class MyTrips extends StatefulWidget {
 }
 
 class _MyTripsState extends State<MyTrips> {
-  // final DatabaseHelper _dbHelper = DatabaseHelper();
-  final List<Map<String, dynamic>> _trips = [];
+  final DatabaseHelper _dbHelper = DatabaseHelper();
+  List<Map<String, dynamic>> _trips = [];
 
   @override
   void initState() {
@@ -20,15 +20,15 @@ class _MyTripsState extends State<MyTrips> {
 
   // Load all trips from the database
   Future<void> _loadTrips() async {
-    // final trips = await _dbHelper.getAllTrips();
-    // setState(() {
-    //   _trips = trips;
-    // });
+    final trips = await _dbHelper.getAllTrips();
+    setState(() {
+      _trips = trips;
+    });
   }
 
   // Clear all trips from the database
   Future<void> _clearAllTrips() async {
-    // await _dbHelper.clearAllEvents();
+    await _dbHelper.clearAllEvents();
     // Reload trips after clearing
     _loadTrips();
     ScaffoldMessenger.of(context).showSnackBar(
