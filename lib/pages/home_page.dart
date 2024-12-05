@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _autoTripManager.startMonitoring(context);
+    // _autoTripManager.startMonitoring(context);   // UnComment to enable AutoTrip
     _sensorData.onEventDetected = (event) {
       debugPrint(event);
     };

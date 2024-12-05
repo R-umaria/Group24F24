@@ -7,6 +7,7 @@ import 'package:drive_wise/database_helper.dart'; // Import database helper
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:drive_wise/gps.dart';
 import 'package:drive_wise/vehicle_speed.dart';
+import 'package:drive_wise/filters/moving_average_filter.dart'; // Import the Moving Average Filter
 
 class SensorData {
   // Stream subscriptions for accelerometer and gyroscope
@@ -14,8 +15,8 @@ class SensorData {
   StreamSubscription<GyroscopeEvent>? _gyroscopeSubscription;
 
   // Thresholds for detecting events
-  final double accelerationThreshold = 30; // Adjusted threshold for significant acceleration/braking (m/s^2)
-  final double gyroscopeThreshold = 3.0;  // Adjusted threshold for sharp turns (rad/s)
+  final double accelerationThreshold = 13; // Threshold for significant acceleration/braking (m/s^2)
+  final double gyroscopeThreshold = 3.0;  // Threshold for sharp turns (rad/s)
 
   // Event callback functions
   void Function(String event)? onEventDetected;
@@ -29,7 +30,9 @@ class SensorData {
   //sped tracking
   final VehicleSpeedManager _vehicleSpeedManager = VehicleSpeedManager();
 
-
+  // Moving Average Filters
+  final MovingAverageFilter accelerometerFilter = MovingAverageFilter(windowSize: 5);
+  final MovingAverageFilter gyroscopeFilter = MovingAverageFilter(windowSize: 5);
 
   // To prevent duplicate logging within the same second
   String? _lastLoggedTimestamp;
@@ -48,7 +51,6 @@ class SensorData {
 
   }
 
-
   // Stop listening to sensor data
   void stopSensors() {
     _accelerometerSubscription?.cancel();
@@ -60,28 +62,45 @@ class SensorData {
 
   // Analyze accelerometer data to detect sudden braking/acceleration
   void _analyzeAccelerometerData(AccelerometerEvent event) async {
-    final double totalAcceleration =
+    // Calculate raw total acceleration
+    final double rawTotalAcceleration =
         sqrt(event.x * event.x + event.y * event.y + event.z * event.z);
 
-    if (totalAcceleration > accelerationThreshold) {
-      logEvent("Sudden Acceleration/Braking Detected");
+    // Apply the moving average filter
+    final double smoothedAcceleration = accelerometerFilter.apply(rawTotalAcceleration);
+
+    // Use this for testing with and without the filter:
+    // Uncomment the next line to test without the filter.
+    // final double smoothedAcceleration = rawTotalAcceleration;
+
+    if (smoothedAcceleration > accelerationThreshold) {
+      _logEvent("Sudden Acceleration/Braking Detected");
       onEventDetected?.call("Sudden Acceleration/Braking Detected");
     }
   }
 
   // Analyze gyroscope data to detect sharp turns
   void _analyzeGyroscopeData(GyroscopeEvent event) async {
-    final double angularVelocity =
+    // Calculate raw angular velocity
+    final double rawAngularVelocity =
         sqrt(event.x * event.x + event.y * event.y + event.z * event.z);
 
-    if (angularVelocity > gyroscopeThreshold) {
-      logEvent("Sharp Turn Detected");
+    // Apply the moving average filter
+    final double smoothedAngularVelocity = gyroscopeFilter.apply(rawAngularVelocity);
+
+    // Use this for testing with and without the filter:
+    // Uncomment the next line to test without the filter.
+    // final double smoothedAngularVelocity = rawAngularVelocity;
+
+    if (smoothedAngularVelocity > gyroscopeThreshold) {
+      _logEvent("Sharp Turn Detected");
       onEventDetected?.call("Sharp Turn Detected");
     }
   }
 
   // Log detected events into the SQLite database
-  Future<void> logEvent(String eventType) async {
+  Future<void> _logEvent(String eventType) async {
+    // Get the current timestamp in seconds only
     final String timestamp = DateTime.now().toIso8601String().split('.').first;
 
     // Ignore duplicate events occurring within the same second

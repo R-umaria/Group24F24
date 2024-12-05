@@ -31,59 +31,60 @@ class AutoTripManager {
     });
   }
 
-  // Start monitoring for auto trip
-  void startMonitoring(BuildContext context) {
-    gpsTracking(); // Start GPS tracking
+  // UnComment to enable AutoTrip
+  //  // Start monitoring for auto trip
+  // void startMonitoring(BuildContext context) {
+  //   gpsTracking(); // Start GPS tracking
 
-    const locationChangeThreshold = 10.0; // Minimum change in meters
-    const stepStopThreshold = 3; // Steps needed to stop the trip
+  //   const locationChangeThreshold = 10.0; // Minimum change in meters
+  //   const stepStopThreshold = 3; // Steps needed to stop the trip
 
-    // Periodically check the conditions
-    Stream.periodic(Duration(seconds: 3)).listen((_) async {
-      // Get current location
-      final currentLat = currentLatitude ?? 0.0; // Handle null values
-      final currentLng = currentLongitude ?? 0.0;
+  //   // Periodically check the conditions
+  //   Stream.periodic(Duration(seconds: 3)).listen((_) async {
+  //     // Get current location
+  //     final currentLat = currentLatitude ?? 0.0; // Handle null values
+  //     final currentLng = currentLongitude ?? 0.0;
 
-      // Compute distance change
-      final distanceMoved = _calculateDistance(
-        lastLatitude,
-        lastLongitude,
-        currentLat,
-        currentLng,
-      );
+  //     // Compute distance change
+  //     final distanceMoved = _calculateDistance(
+  //       lastLatitude,
+  //       lastLongitude,
+  //       currentLat,
+  //       currentLng,
+  //     );
 
-      // Conditions to start a trip
-      if (!isTripActive &&
-          distanceMoved > locationChangeThreshold &&
-          (lastStepCount == null || lastStepCount! == 0)) {
-        isTripActive = true;
-        _startTrip(context, currentLat, currentLng);
-      }
+  //     // Conditions to start a trip
+  //     if (!isTripActive &&
+  //         distanceMoved > locationChangeThreshold &&
+  //         (lastStepCount == null || lastStepCount! == 0)) {
+  //       isTripActive = true;
+  //       _startTrip(context, currentLat, currentLng);
+  //     }
 
-      // Conditions to stop a trip
-      if (isTripActive &&
-          distanceMoved < locationChangeThreshold &&
-          lastStepCount != null &&
-          lastStepCount! >= stepStopThreshold) {
-        isTripActive = false;
-        _stopTrip(context, currentLat, currentLng);
-      }
+  //     // Conditions to stop a trip
+  //     if (isTripActive &&
+  //         distanceMoved < locationChangeThreshold &&
+  //         lastStepCount != null &&
+  //         lastStepCount! >= stepStopThreshold) {
+  //       isTripActive = false;
+  //       _stopTrip(context, currentLat, currentLng);
+  //     }
 
-      // Update last location
-      lastLatitude = currentLat;
-      lastLongitude = currentLng;
-    });
+  //     // Update last location
+  //     lastLatitude = currentLat;
+  //     lastLongitude = currentLng;
+  //   });
 
-    // Monitor sensor events
-    _sensorData.onEventDetected = (eventType) async {
-      if (isTripActive) {
-        final currentLat = currentLatitude ?? 0.0;
-        final currentLng = currentLongitude ?? 0.0;
-        final currentSpeed = await _speedManager.getCurrentSpeed();
-        _sensorData.logEvent(eventType);
-      }
-    };
-  }
+  //   // Monitor sensor events
+  //   _sensorData.onEventDetected = (eventType) async {
+  //     if (isTripActive) {
+  //       final currentLat = currentLatitude ?? 0.0;
+  //       final currentLng = currentLongitude ?? 0.0;
+  //       final currentSpeed = await _speedManager.getCurrentSpeed();
+  //      // _sensorData.logEvent(eventType);
+  //     }
+  //   };
+  // }
 
   void _startTrip(BuildContext context, double lat, double lng) async {
     // Start sensors and speed tracking
@@ -91,7 +92,7 @@ class AutoTripManager {
     _speedManager.startSpeedTracking();
 
     final speed = await _speedManager.getCurrentSpeed();
-    _sensorData.logEvent("start");
+    //_sensorData.logEvent("start");
 
     // Notify UI
     ScaffoldMessenger.of(context).showSnackBar(
@@ -109,7 +110,7 @@ class AutoTripManager {
     stopGpsTracking();
 
     final speed = await _speedManager.getCurrentSpeed();
-    _sensorData.logEvent("stop");
+    //_sensorData.logEvent("stop");
 
     // Notify UI
     ScaffoldMessenger.of(context).showSnackBar(
