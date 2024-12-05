@@ -3,7 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'dart:math';
-import 'behaviour_database/database.dart';
+import '../database_helper.dart';
 
 //state based on the comparison between the current speed and the limit (based on our chosen thresholds)
 //currently set for city driving but adjusted thresholds will be added for highway driving later
@@ -131,12 +131,19 @@ class SpeedAnalysisTimer {
     debugPrint('warning state percent: ${warningPercentage.toStringAsFixed(2)}%');
     debugPrint('dangerous state percent: ${dangerousPercentage.toStringAsFixed(2)}%');
     debugPrint('safe state percent: ${safePercentage.toStringAsFixed(2)}%');
-
-    //insert into database
-    final behaviourDatabase = BehaviourAnalysisDatabase();
-    var tripinfo = behaviourAnalysisInfo(id: 0,warningSpeedPercent: warningPercentage, dangerSpeedPercent: dangerousPercentage, safeSpeedPercent: safePercentage);
-    behaviourDatabase.insertBehaviourAnalysisInfo(tripinfo);
+    _logBehaviourReport(safePercentage, warningPercentage, dangerousPercentage);
   }
+
+ final DatabaseHelper _dbHelper = DatabaseHelper();
+
+ Future<void> _logBehaviourReport(double safespeedpercent, double warningspeedpercent, double dangerspeedpercent) async{
+    await _dbHelper.insertBehaviour({
+      'warning_speed_percent': warningspeedpercent,
+      'safe_speed_percent': safespeedpercent,
+      'danger_speed_percent': dangerspeedpercent
+    });
+
+ }
 
 //for the danger popup for speed:
 class SpeedStateNotifier extends ChangeNotifier {
@@ -164,16 +171,7 @@ class behaviourAnalysisInfo {
     required this.dangerSpeedPercent,
     required this.safeSpeedPercent,
   });
-    //converting behaviour analysis info into a Map. The keys must correspond to the names of the
-  // columns in the database.
-  Map<String, Object?> toMap() {
-    return {
-      'id': id,
-      'warningSpeedPercent': warningSpeedPercent,
-      'dangerSpeedPercent': dangerSpeedPercent,
-      'safeSpeedPercent': safeSpeedPercent,
-    };
-  }
+
     @override
   String toString() {
     return 'Trip{id: $id, warningSpeedPercent: $warningSpeedPercent, dangerSpeedPercent: $dangerSpeedPercent, safeSpeedPercent: $safeSpeedPercent}';

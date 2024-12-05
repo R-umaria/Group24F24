@@ -80,7 +80,7 @@ class AutoTripManager {
         final currentLat = currentLatitude ?? 0.0;
         final currentLng = currentLongitude ?? 0.0;
         final currentSpeed = await _speedManager.getCurrentSpeed();
-        _logEvent(eventType, currentLat, currentLng, currentSpeed);
+        _sensorData.logEvent(eventType);
       }
     };
   }
@@ -91,7 +91,7 @@ class AutoTripManager {
     _speedManager.startSpeedTracking();
 
     final speed = await _speedManager.getCurrentSpeed();
-    _logEvent("start", lat, lng, speed);
+    _sensorData.logEvent("start");
 
     // Notify UI
     ScaffoldMessenger.of(context).showSnackBar(
@@ -109,7 +109,7 @@ class AutoTripManager {
     stopGpsTracking();
 
     final speed = await _speedManager.getCurrentSpeed();
-    _logEvent("stop", lat, lng, speed);
+    _sensorData.logEvent("stop");
 
     // Notify UI
     ScaffoldMessenger.of(context).showSnackBar(
@@ -120,17 +120,7 @@ class AutoTripManager {
     );
   }
 
-  void _logEvent(String eventType, double lat, double lng, double speed) async {
-    final timestamp = DateTime.now().toIso8601String();
-    await _dbHelper.insertEvent({
-      'event_type': eventType,
-      'timestamp': timestamp,
-      'latitude': lat,
-      'longitude': lng,
-      'speed': speed,
-    });
-    print("Logged $eventType: $timestamp, Lat: $lat, Lng: $lng, Speed: $speed");
-  }
+
 
   // Utility function to calculate distance between two coordinates
   double _calculateDistance(

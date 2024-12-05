@@ -3,7 +3,7 @@
 
 import 'package:flutter/material.dart';
 import './prev_trips_backend.dart';
-import '../trip_events.dart'; //old trips page that shows events 
+import '../my_trips.dart'; 
 
 class PrevTripsPage extends StatefulWidget {
   const PrevTripsPage({super.key});

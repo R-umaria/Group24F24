@@ -26,6 +26,11 @@ class SensorData {
   // Speed manager instance
   final VehicleSpeedManager _speedManager = VehicleSpeedManager();
 
+  //sped tracking
+  final VehicleSpeedManager _vehicleSpeedManager = VehicleSpeedManager();
+
+
+
   // To prevent duplicate logging within the same second
   String? _lastLoggedTimestamp;
 
@@ -38,7 +43,11 @@ class SensorData {
     _gyroscopeSubscription = gyroscopeEvents.listen((event) {
       _analyzeGyroscopeData(event);
     });
+    
+    _vehicleSpeedManager.startSpeedTracking(); //added speed tracking here
+
   }
+
 
   // Stop listening to sensor data
   void stopSensors() {
@@ -46,6 +55,7 @@ class SensorData {
     _gyroscopeSubscription?.cancel();
     _accelerometerSubscription = null;
     _gyroscopeSubscription = null;
+    _vehicleSpeedManager.stopSpeedTracking();  //added for speed tracking
   }
 
   // Analyze accelerometer data to detect sudden braking/acceleration
@@ -54,7 +64,7 @@ class SensorData {
         sqrt(event.x * event.x + event.y * event.y + event.z * event.z);
 
     if (totalAcceleration > accelerationThreshold) {
-      _logEvent("Sudden Acceleration/Braking Detected");
+      logEvent("Sudden Acceleration/Braking Detected");
       onEventDetected?.call("Sudden Acceleration/Braking Detected");
     }
   }
@@ -65,13 +75,13 @@ class SensorData {
         sqrt(event.x * event.x + event.y * event.y + event.z * event.z);
 
     if (angularVelocity > gyroscopeThreshold) {
-      _logEvent("Sharp Turn Detected");
+      logEvent("Sharp Turn Detected");
       onEventDetected?.call("Sharp Turn Detected");
     }
   }
 
   // Log detected events into the SQLite database
-  Future<void> _logEvent(String eventType) async {
+  Future<void> logEvent(String eventType) async {
     final String timestamp = DateTime.now().toIso8601String().split('.').first;
 
     // Ignore duplicate events occurring within the same second

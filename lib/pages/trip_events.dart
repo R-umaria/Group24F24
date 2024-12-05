@@ -9,8 +9,8 @@ class MyTrips extends StatefulWidget {
 }
 
 class _MyTripsState extends State<MyTrips> {
-  // final DatabaseHelper _dbHelper = DatabaseHelper();
-  final List<Map<String, dynamic>> _trips = [];
+  final DatabaseHelper _dbHelper = DatabaseHelper();
+  List<Map<String, dynamic>> _trips = [];
 
   @override
   void initState() {
@@ -18,17 +18,30 @@ class _MyTripsState extends State<MyTrips> {
     _loadTrips();
   }
 
+//moving this to one file instead of having it in both auto and manual start
+    void _logEvent(String eventType, double lat, double lng, double speed) async {
+      final timestamp = DateTime.now().toIso8601String();
+      await _dbHelper.insertEvent({
+        'event_type': eventType,
+        'timestamp': timestamp,
+        'latitude': lat,
+        'longitude': lng,
+        'speed': speed,
+      });
+      print("Logged $eventType: $timestamp, Lat: $lat, Lng: $lng, Speed: $speed");
+  }
+
   // Load all trips from the database
   Future<void> _loadTrips() async {
-    // final trips = await _dbHelper.getAllTrips();
-    // setState(() {
-    //   _trips = trips;
-    // });
+    final trips = await _dbHelper.getAllTrips();
+    setState(() {
+      _trips = trips;
+    });
   }
 
   // Clear all trips from the database
   Future<void> _clearAllTrips() async {
-    // await _dbHelper.clearAllEvents();
+    await _dbHelper.clearAllEvents();
     // Reload trips after clearing
     _loadTrips();
     ScaffoldMessenger.of(context).showSnackBar(
